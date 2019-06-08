@@ -12,6 +12,7 @@
 
 import React, { useState } from 'react';
 import NProgress from 'nprogress';
+import Head from 'next/head';
 
 import AccountsPage from '../layouts/accountsPage';
 import { auth } from '../api/firebase';
@@ -39,6 +40,10 @@ const ForgotPassword = () => {
 
   return (
     <AccountsPage>
+      <Head>
+        <title>Forgot Password</title>
+      </Head>
+
       <form onSubmit={handleSubmit}>
         <h1 className="text-4xl mb-6 font-bold">Reset Password</h1>
 

@@ -11,6 +11,7 @@
 
 import React, { useState } from 'react';
 import Router from 'next/router';
+import Head from 'next/head';
 import NProgress from 'nprogress';
 
 import { auth, db } from '../api/firebase';
@@ -64,6 +65,10 @@ const AccountsForm = ({}) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <Head>
+        <title>{isSigningUp ? 'Sign Up' : 'Login'}</title>
+      </Head>
+
       <h1 className="text-4xl font-bold mb-6">
         {isSigningUp ? 'Sign Up' : 'Login'}
       </h1>
