@@ -11,7 +11,9 @@
 
 import React, { useState } from 'react';
 import Router from 'next/router';
+import NProgress from 'nprogress';
 
+import { auth, db } from '../api/firebase';
 
 const AccountsForm = ({}) => {
   const [name, setName] = useState('');
@@ -23,6 +25,40 @@ const AccountsForm = ({}) => {
 
   function handleSubmit(e) {
     e.preventDefault();
+    NProgress.start();
+
+    const done = () => {
+      NProgress.done();
+      Router.push('/elections');
+    };
+
+    const error = ({ code }) => {
+      setError(auth.handleError(code));
+      NProgress.done();
+    };
+
+    if (isSigningUp) {
+      // Sign Up
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(res => {
+          return db
+            .collection('users')
+            .doc(res.user.uid)
+            .set({
+              name: name
+            });
+        })
+        .then(done)
+        .catch(error);
+    } else {
+      // Login
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(done)
+        .catch(error);
+    }
+
     console.log(email, password);
   }
 
