@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 
-import AccountsPage from '../layouts/accountsPage';
-import AccountsForm from '../components/accountsForm';
+import AccountsPage from '../layouts/AccountsPage';
+import AccountsForm from '../components/AccountsForm';
 
 import { auth } from '../api/firebase';
 
