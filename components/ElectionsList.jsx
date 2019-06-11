@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import moment from 'moment';
 
-import ElectionsContext from '../api/ElectionsProvider.jsx';
+import DataContext from '../api/DataProvider.jsx';
 
 const ElectionsList = () => {
-  const { elections } = useContext(ElectionsContext);
+  const { elections } = useContext(DataContext);
   const electionStates = ['voting', 'nominating', 'done'];
 
   return (

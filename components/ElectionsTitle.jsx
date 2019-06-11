@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 
-import ElectionsProvider from '../api/ElectionsProvider';
+import DataProvider from '../api/DataProvider';
 
 const ElectionsTitle = ({ electionId }) => {
-  const { elections } = useContext(ElectionsProvider);
+  const { elections } = useContext(DataProvider);
 
   const headerTitle =
     electionId && elections.length !== 0

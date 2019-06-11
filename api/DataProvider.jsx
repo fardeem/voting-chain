@@ -2,11 +2,11 @@ import React, { Component, createContext } from 'react';
 
 import { db } from './firebase';
 
-const ElectionsContext = createContext({
+const DataContext = createContext({
   elections: []
 });
 
-export class ElectionsProvider extends Component {
+export class DataProvider extends Component {
   state = {
     elections: []
   };
@@ -27,9 +27,9 @@ export class ElectionsProvider extends Component {
 
   render() {
     return (
-      <ElectionsContext.Provider value={{ elections: this.state.elections }}>
+      <DataContext.Provider value={{ elections: this.state.elections }}>
         {this.props.children}
-      </ElectionsContext.Provider>
+      </DataContext.Provider>
     );
   }
 }
@@ -58,4 +58,4 @@ function formatElectionDoc(doc) {
   };
 }
 
-export default ElectionsContext;
+export default DataContext;
