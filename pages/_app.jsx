@@ -8,6 +8,8 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import Head from 'next/head';
 
+import { ElectionsProvider } from '../api/ElectionsProvider';
+
 import '../styles/main.css';
 
 export default class MyApp extends App {
@@ -19,7 +21,9 @@ export default class MyApp extends App {
         <Head>
           <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
         </Head>
-        <Component {...pageProps} />
+        <ElectionsProvider>
+          <Component {...pageProps} />
+        </ElectionsProvider>
       </Container>
     );
   }
