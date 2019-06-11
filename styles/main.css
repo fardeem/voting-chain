@@ -13,7 +13,7 @@
 }
 
 #nprogress {
-  --blue: #f7e53b;
+  --blue: #3bf783;
   pointer-events: none;
 
   .bar {
