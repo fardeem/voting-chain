@@ -10,6 +10,7 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "firebase": "^6.1.1",
+    "moment": "^2.24.0",
     "next": "8.1.0",
     "nprogress": "^0.2.0",
     "react": "16.8.6",
