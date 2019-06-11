@@ -1,33 +1,60 @@
 import React, { Component, createContext } from 'react';
 
-import { db } from './firebase';
+import { db, auth } from './firebase';
 
 const DataContext = createContext({
-  elections: []
+  elections: [],
+  users: [],
+  currentUser: {}
 });
 
 export class DataProvider extends Component {
   state = {
-    elections: []
+    elections: [],
+    users: [],
+    currentUser: {}
   };
 
-  componentDidMount() {
-    db.collection('elections')
-      .get()
-      .then(querySnapshot => {
-        var elections = [];
+  electionUnsubscriber = function() {};
+  userUnsubscriber = function() {};
 
-        querySnapshot.forEach(function(doc) {
+  componentDidMount = () => {
+    this.electionUnsubscriber = db
+      .collection('elections')
+      .onSnapshot(querySnapshot => {
+        const elections = [];
+
+        querySnapshot.forEach(doc => {
           elections.push(formatElectionDoc({ id: doc.id, ...doc.data() }));
         });
 
         this.setState({ elections });
       });
-  }
+
+    this.userUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
+      const users = [];
+
+      querySnapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+
+      this.setState({ users });
+
+      this.setState({
+        currentUser: {
+          ...users.find(user => user.id === auth.currentUser.uid)
+        }
+      });
+    });
+  };
+
+  componentWillUnmount = () => {
+    this.electionUnsubscriber();
+    this.userUnsubscriber();
+  };
 
   render() {
+    const { elections, users, currentUser } = this.state;
     return (
-      <DataContext.Provider value={{ elections: this.state.elections }}>
+      <DataContext.Provider value={{ elections, users, currentUser }}>
         {this.props.children}
       </DataContext.Provider>
     );
