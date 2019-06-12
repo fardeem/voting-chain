@@ -2,6 +2,8 @@ import React, { Component, createContext } from 'react';
 
 import { db, auth } from './firebase';
 
+import Loading from '../components/Loading';
+
 const DataContext = createContext({
   elections: [],
   users: [],
@@ -12,11 +14,13 @@ export class DataProvider extends Component {
   state = {
     elections: [],
     users: [],
-    currentUser: {}
+    currentUser: {},
+    index: 0
   };
 
   electionUnsubscriber = function() {};
   userUnsubscriber = function() {};
+  currentUserUnsubscriber = function() {};
 
   componentDidMount = () => {
     this.electionUnsubscriber = db
@@ -28,7 +32,7 @@ export class DataProvider extends Component {
           elections.push(formatElectionDoc({ id: doc.id, ...doc.data() }));
         });
 
-        this.setState({ elections });
+        this.setState({ elections, index: this.state.index + 1 });
       });
 
     this.userUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
@@ -36,12 +40,20 @@ export class DataProvider extends Component {
 
       querySnapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
 
-      this.setState({ users });
+      this.setState({ users, index: this.state.index + 1 });
 
-      this.setState({
-        currentUser: {
-          ...users.find(user => user.id === auth.currentUser.uid)
+      this.currentUserUnsubscriber = auth.onAuthStateChanged(user => {
+        if (user) {
+          this.setState({
+            currentUser: {
+              ...users.find(user => user.id === auth.currentUser.uid)
+            }
+          });
+        } else {
+          this.setState({ currentUser: null });
         }
+
+        this.setState({ index: this.state.index + 1 });
       });
     });
   };
@@ -49,13 +61,14 @@ export class DataProvider extends Component {
   componentWillUnmount = () => {
     this.electionUnsubscriber();
     this.userUnsubscriber();
+    this.currentUserUnsubscriber();
   };
 
   render() {
-    const { elections, users, currentUser } = this.state;
+    const { elections, users, currentUser, index } = this.state;
     return (
       <DataContext.Provider value={{ elections, users, currentUser }}>
-        {this.props.children}
+        {index >= 3 ? this.props.children : <Loading />}
       </DataContext.Provider>
     );
   }
