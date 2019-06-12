@@ -1,28 +1,24 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import Router from 'next/router';
 
 import AccountsPage from '../layouts/AccountsPage';
 import AccountsForm from '../components/AccountsForm';
 
-import { auth } from '../api/firebase';
+import DataProvider from '../api/DataProvider';
 
-class Home extends Component {
-  componentDidMount() {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        Router.push('/elections');
-      } else {
-      }
-    });
-  }
+const Home = () => {
+  const { currentUser } = useContext(DataProvider);
 
-  render() {
+  if (!currentUser) {
     return (
       <AccountsPage>
         <AccountsForm />
       </AccountsPage>
     );
+  } else {
+    Router.push('/elections');
+    return null;
   }
-}
+};
 
 export default Home;
