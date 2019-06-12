@@ -9,9 +9,9 @@ const ElectionsList = () => {
   const electionStates = ['voting', 'nominating', 'done'];
 
   return (
-    <div className="flex mb-4">
+    <div className="flex mb-4 -mr-8">
       {electionStates.map(state => (
-        <div className="w-1/3 mr-4" key={state}>
+        <div className="w-1/3 mr-8" key={state}>
           <h1 className="text-sm font-bold border-pink-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
             {state === 'done' ? 'Past elections' : state}
           </h1>
