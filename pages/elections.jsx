@@ -4,7 +4,7 @@
  */
 
 import React, { useContext } from 'react';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 
 import DataProvider from '../api/DataProvider';
 import ElectionsNav from '../components/ElectionsNav';
@@ -14,11 +14,16 @@ import NominationsPage from '../components/NominationsPage';
 import VotingPage from '../components/VotingPage';
 
 const ElectionsPage = ({ router }) => {
-  const { elections } = useContext(DataProvider);
+  const { elections, currentUser } = useContext(DataProvider);
 
   const electionId = router.query.id;
   let currentElection;
   if (electionId) currentElection = elections.find(e => e.id === electionId);
+
+  if (!currentUser) {
+    Router.push('/');
+    return null;
+  }
 
   return (
     <main className="min-h-screen">
