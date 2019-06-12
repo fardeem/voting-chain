@@ -8,7 +8,6 @@ class Loading extends Component {
   };
 
   componentWillUnmount = () => {
-    console.log('unmounting');
     NProgress.done();
   };
 
