@@ -81,3 +81,11 @@
     transform: rotate(360deg);
   }
 }
+
+.z-hide {
+  z-index: -10;
+}
+
+.transition-opacity {
+  transition: all 0.5s;
+}
