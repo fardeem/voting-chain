@@ -11,6 +11,11 @@ const AdminPage = () => {
 
   return (
     <main
+      onClick={e => {
+        if (isCreating) {
+          setIsCreating(false);
+        }
+      }}
     >
       <Head>
         <title>Admin</title>

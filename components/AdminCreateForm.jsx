@@ -8,6 +8,7 @@ const AdminCreateForm = ({ show }) => {
           'w-full max-w-xs mt-10 shadow-2xl bg-white rounded p-8 transition-opacity ' +
           (show ? 'z-10 opacity-100' : 'z-hide opacity-0')
         }
+        onClick={e => e.stopPropagation()}
       >
         <form>
           <div className="mb-4">
