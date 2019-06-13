@@ -41,7 +41,7 @@ const AdminElectionList = () => {
                 Start time
               </p>
               <time className="text-lg">
-                {moment(election.start).format('MMM Do YYYY, h:mm a')}
+                {moment(election.start).format('MMMM Do YYYY')}
               </time>
             </div>
 
@@ -50,7 +50,7 @@ const AdminElectionList = () => {
                 End time
               </p>
               <time className="text-lg">
-                {moment(election.end).format('MMM Do YYYY, h:mm a')}
+                {moment(election.end).format('MMMM Do YYYY')}
               </time>
             </div>
 
