@@ -26,7 +26,7 @@ const ElectionsNav = () => {
             auth.signOut();
             Router.push('/');
           }}
-          className="bg-pink-500 cursor-pointer hover:bg-pink-600 text-sm font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline"
+          className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Logout
         </button>

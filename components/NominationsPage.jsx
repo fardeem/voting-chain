@@ -11,7 +11,7 @@ const NominationsPage = ({ context }) => {
     <div className="flex flex-wrap -mr-8">
       {Object.keys(positions).map((key, index) => (
         <div className="w-1/3 pr-8 mb-40" key={index}>
-          <h1 className="text-sm font-bold border-pink-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
+          <h1 className="text-sm font-bold border-purple-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
             {positions[key]}
           </h1>
 
@@ -79,7 +79,7 @@ const NominateUser = ({ options, position, electionId }) => {
         </select>
 
         <button
-          className="flex-shrink-0 bg-pink-500 hover:bg-pink-600 border-pink-500 hover:border-pink-600 text-sm border-4 shadow text-white py-1 px-2 rounded"
+          className="flex-shrink-0 bg-purple-500 hover:bg-purple-600 border-purple-500 hover:border-purple-600 text-sm border-4 shadow text-white py-1 px-2 rounded"
           type="submit"
         >
           Nominate

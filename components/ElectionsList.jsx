@@ -12,7 +12,7 @@ const ElectionsList = () => {
     <div className="flex mb-4 -mr-8">
       {electionStates.map(state => (
         <div className="w-1/3 mr-8" key={state}>
-          <h1 className="text-sm font-bold border-pink-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
+          <h1 className="text-sm font-bold border-purple-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
             {state === 'done' ? 'Past elections' : state}
           </h1>
 
@@ -32,7 +32,7 @@ const List = ({ data, status }) => {
       {data.map(({ id, name, start, end }) => (
         <li key={id}>
           <Link href={`/elections?id=${id}`}>
-            <a className="text-md hover:text-pink-600">{name}</a>
+            <a className="text-md hover:text-purple-600">{name}</a>
           </Link>
 
           <p className="italic text-sm font-serif text-gray-600">

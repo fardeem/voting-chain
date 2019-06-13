@@ -119,14 +119,14 @@ const AccountsForm = ({}) => {
 
       <div className="flex items-center justify-between">
         <input
-          className="bg-pink-500 cursor-pointer hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-purple-500 cursor-pointer hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
           value={isSigningUp ? 'Sign Up' : 'Sign In'}
         />
 
         <div className="text-right">
           <button
-            className="inline-block align-baseline font-bold text-sm text-pink-500 hover:text-pink-800"
+            className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
             onClick={() => setIsSigningUp(!isSigningUp)}
             type="button"
           >
@@ -136,7 +136,7 @@ const AccountsForm = ({}) => {
           {!isSigningUp ? (
             <a
               href="/forgot-password"
-              className="block align-baseline font-bold text-sm text-pink-500 hover:text-pink-800"
+              className="block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
             >
               Forgot password?
             </a>
