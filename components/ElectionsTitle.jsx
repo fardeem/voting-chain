@@ -5,7 +5,7 @@ import DataProvider from '../api/DataProvider';
 
 const ElectionsTitle = ({ electionId }) => {
   const { elections } = useContext(DataProvider);
-  let title = 'All elections';
+  let title = 'All Elections';
   let subtitle = '';
 
   if (electionId && elections) {
