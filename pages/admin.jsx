@@ -7,7 +7,7 @@ import AdminElectionList from '../components/AdminElectionList';
 import AdminCreateForm from '../components/AdminCreateForm';
 
 const AdminPage = () => {
-  const [isCreating, setIsCreating] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
 
   return (
     <main
