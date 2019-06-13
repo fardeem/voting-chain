@@ -9,16 +9,21 @@ import DataProvider from '../api/DataProvider';
 const Home = () => {
   const { currentUser } = useContext(DataProvider);
 
-  if (!currentUser) {
-    return (
-      <AccountsPage>
-        <AccountsForm />
-      </AccountsPage>
-    );
-  } else {
+  if (currentUser && currentUser.role === 'admin') {
+    Router.push('/admin');
+    return null;
+  }
+
+  if (currentUser) {
     Router.push('/elections');
     return null;
   }
+
+  return (
+    <AccountsPage>
+      <AccountsForm />
+    </AccountsPage>
+  );
 };
 
 export default Home;
