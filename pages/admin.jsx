@@ -37,6 +37,20 @@ const AdminPage = () => {
           </div>
         </div>
       </header>
+
+      <div className="content w-full rounded-t-lg -mt-2 bg-white">
+        <div className="relative w-full max-w-4xl mx-auto px-8 pt-10">
+          <AdminCreateForm show={isCreating} />
+          <div
+            className={
+              'transition-opacity ' +
+              (isCreating ? 'opacity-25' : 'opacity-100')
+            }
+          >
+            <AdminElectionList />
+          </div>
+        </div>
+      </div>
     </main>
   );
 };
