@@ -17,11 +17,7 @@ class Loading extends Component {
         <Head>
           <title>Loading</title>
         </Head>
-        <div className="w-full h-screen bg-pattern flex justify-center items-center">
-          <span className="text-white text-4xl uppercase tracking-widest font-extrabold">
-            Loading
-          </span>
-        </div>
+        <div className="w-full h-screen bg-pattern flex justify-center items-center" />
       </>
     );
   }
