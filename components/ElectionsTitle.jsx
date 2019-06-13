@@ -5,21 +5,31 @@ import DataProvider from '../api/DataProvider';
 
 const ElectionsTitle = ({ electionId }) => {
   const { elections } = useContext(DataProvider);
+  let title = 'All elections';
+  let subtitle = '';
 
-  const headerTitle =
-    electionId && elections.length !== 0
-      ? elections.find(e => e.id === electionId).name
-      : 'All Elections';
+  if (electionId && elections) {
+    const { name, status } = elections.find(e => e.id === electionId);
+
+    title = name;
+
+    if (status === 'voting') subtitle = 'Vote candidates';
+    else if (status === 'nominating') subtitle = 'nominate candidates';
+    else subtitle = 'See results';
+
+    subtitle += ' for the election';
+  }
 
   return (
     <>
       <Head>
-        <title>{headerTitle}</title>
+        <title>{title}</title>
       </Head>
 
-      <h1 className="text-6xl font-light text-white text-center mt-12">
-        {headerTitle}
-      </h1>
+      <div className="text-center text-white mt-12">
+        <p className="uppercase tracking-widest text-xs">&nbsp;{subtitle}</p>
+        <h1 className="text-6xl font-light">{title}</h1>
+      </div>
     </>
   );
 };
