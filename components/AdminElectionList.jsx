@@ -38,7 +38,7 @@ const AdminElectionList = () => {
 
             <div className="mb-8">
               <p className="text-sm tracking-wider uppercase text-gray-600">
-                Start time
+                Start
               </p>
               <time className="text-lg">
                 {moment(election.start).format('MMMM Do YYYY')}
@@ -47,7 +47,7 @@ const AdminElectionList = () => {
 
             <div className="mb-8">
               <p className="text-sm tracking-wider uppercase text-gray-600">
-                End time
+                End
               </p>
               <time className="text-lg">
                 {moment(election.end).format('MMMM Do YYYY')}
