@@ -5,46 +5,55 @@ const AdminCreateForm = ({ show }) => {
     <div className="absolute flex justify-center w-full">
       <div
         className={
-          'w-full max-w-xs mt-10 shadow-2xl bg-white rounded p-8 transition-opacity ' +
+          'w-full max-w-2xl mt-4 shadow-2xl bg-white rounded p-8 transition-opacity ' +
           (show ? 'z-10 opacity-100' : 'z-hide opacity-0')
         }
         onClick={e => e.stopPropagation()}
       >
         <form>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
-            >
-              Name
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              placeholder="Username"
-            />
-          </div>
+          <div className="flex">
+            <div className="w-1/2 pr-6">
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Name
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  required
+                />
+              </div>
 
-          <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-              placeholder="******************"
-            />
-            <p className="text-red-500 text-xs italic">
-              Please choose a password.
-            </p>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Start Date
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  type="date"
+                  value={start}
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  End Date
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  type="date"
+                  value={end}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="w-1/2 pl-6 border-gray-300 border-l-2 border-dashed">
               <PositionsList
                 list={positionsList}
                 updateList={setPositionsList}
+              />
+            </div>
           </div>
 
           <button
