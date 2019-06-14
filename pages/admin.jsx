@@ -35,7 +35,7 @@ const AdminPage = () => {
           <div className="accounts">
             <button
               onClick={() => setIsCreating(!isCreating)}
-              className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 rounded focus:outline-none"
             >
               {isCreating ? 'Cancel' : 'Create Election'}
             </button>
