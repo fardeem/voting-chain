@@ -16,7 +16,10 @@ const NominationsPage = ({ context }) => {
           </h1>
 
           <NominateUser
-            options={users.filter(user => !nominations[key].includes(user.id))}
+            options={users.filter(
+              user =>
+                !nominations[key].includes(user.id) && user.role !== 'admin'
+            )}
             position={key}
             electionId={id}
           />
