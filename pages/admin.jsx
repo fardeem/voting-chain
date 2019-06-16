@@ -45,7 +45,7 @@ const AdminPage = () => {
 
       <div className="content w-full rounded-t-lg -mt-2 bg-white">
         <div className="relative w-full max-w-4xl mx-auto px-8 pt-10">
-          <AdminCreateForm show={isCreating} />
+          <AdminCreateForm show={isCreating} setShow={setIsCreating} />
           <div
             className={
               'transition-opacity ' +
