@@ -115,9 +115,6 @@ const PositionsList = ({ list, updateList }) => {
           placeholder="Add Positions"
           value={newPosition}
           onChange={e => setNewPosition(e.target.value)}
-          onKeyPress={e => {
-            if (e.key === 'Enter') addNewPosition();
-          }}
         />
         <button
           className="bg-blue-500 ml-2 shadow hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
