@@ -5,18 +5,19 @@ import AccountsPage from '../layouts/AccountsPage';
 import AccountsForm from '../components/AccountsForm';
 
 import DataProvider from '../api/DataProvider';
+import Loading from '../components/Loading';
 
 const Home = () => {
   const { currentUser } = useContext(DataProvider);
 
   if (currentUser && currentUser.role === 'admin') {
     Router.push('/admin');
-    return null;
+    return <Loading />;
   }
 
   if (currentUser) {
     Router.push('/elections');
-    return null;
+    return <Loading />;
   }
 
   return (
