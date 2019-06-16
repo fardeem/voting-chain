@@ -1,4 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+const AdminCreateForm = ({ show, setShow }) => {
+  const [name, setName] = useState('');
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [positionsList, setPositionsList] = useState({});
+
 
 const AdminCreateForm = ({ show }) => {
   return (
@@ -21,6 +28,8 @@ const AdminCreateForm = ({ show }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
                   required
+                  value={name}
+                  onChange={e => setName(e.target.value)}
                 />
               </div>
 
@@ -33,6 +42,10 @@ const AdminCreateForm = ({ show }) => {
                   type="date"
                   value={start}
                   required
+                  onChange={e => {
+                    setStart(e.target.value);
+                  }}
+                  max={end}
                 />
               </div>
               <div className="mb-6">
@@ -44,6 +57,10 @@ const AdminCreateForm = ({ show }) => {
                   type="date"
                   value={end}
                   required
+                  onChange={e => {
+                    setEnd(e.target.value);
+                  }}
+                  min={start}
                 />
               </div>
             </div>
