@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { db } from '../api/firebase';
 
 const AdminCreateForm = ({ show, setShow }) => {
   const [name, setName] = useState('');
@@ -6,8 +7,29 @@ const AdminCreateForm = ({ show, setShow }) => {
   const [end, setEnd] = useState('');
   const [positionsList, setPositionsList] = useState({});
 
+  function handleSubmit(e) {
+    e.preventDefault();
 
-const AdminCreateForm = ({ show }) => {
+    db.collection('elections')
+      .add({
+        name,
+        start: new Date(start),
+        end: new Date(end),
+        positions: positionsList,
+        nominations: Object.keys(positionsList).reduce((accumulator, key) => {
+          accumulator[key] = [];
+          return accumulator;
+        }, {})
+      })
+      .then(() => {
+        setShow(false);
+        setName('');
+        setStart('');
+        setEnd('');
+        setPositionsList('');
+      });
+  }
+
   return (
     <div className="absolute flex justify-center w-full">
       <div
@@ -17,7 +39,7 @@ const AdminCreateForm = ({ show }) => {
         }
         onClick={e => e.stopPropagation()}
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex">
             <div className="w-1/2 pr-6">
               <div className="mb-4">
