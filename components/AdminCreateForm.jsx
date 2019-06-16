@@ -70,11 +70,24 @@ const AdminCreateForm = ({ show }) => {
 
 const PositionsList = ({ list, updateList }) => {
   const [newPosition, setNewPosition] = useState('');
+  const [error, setError] = useState('');
 
   function addNewPosition() {
-    const key = newPosition.toLowerCase().replace(' ', '-');
+    const key = newPosition
+      .trim()
+      .toLowerCase()
+      .replace(' ', '-');
+
+    if (key.length === 0) return;
+
+    if (Object.keys(list).includes(key)) {
+      setError('Position already exists. Please make a new one.');
+      return;
+    }
+
     updateList(Object.assign({}, list, { [key]: newPosition }));
     setNewPosition('');
+    setError('');
   }
 
   return (
@@ -94,7 +107,8 @@ const PositionsList = ({ list, updateList }) => {
         ))}
       </ul>
 
-      <div className="flex">
+      <div className="flex flex-wrap">
+        <p className="w-full text-red-500 text-xs mb-1">{error}</p>
         <input
           className="shadow flex-1 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
