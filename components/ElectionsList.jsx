@@ -30,7 +30,7 @@ const List = ({ data, status }) => {
   return data.length !== 0 ? (
     <ul>
       {data.map(({ id, name, start, end }) => (
-        <li key={id}>
+        <li key={id} className="mb-4">
           <Link href={`/elections?id=${id}`}>
             <a className="text-md hover:text-purple-600">{name}</a>
           </Link>
