@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import Router from 'next/router';
 import Head from 'next/head';
-
-// TODO: Authenticate properly
 
 import AdminElectionList from '../components/AdminElectionList';
 import AdminCreateForm from '../components/AdminCreateForm';
+import DataContext from '../api/DataProvider';
 import { auth } from '../api/firebase';
+import Loading from '../components/Loading';
 
 const AdminPage = () => {
+  const { currentUser } = useContext(DataContext);
   const [isCreating, setIsCreating] = useState(false);
+
+  if (!currentUser || currentUser.role !== 'admin') {
+    Router.push('/');
+    return <Loading />;
+  }
 
   return (
     <main
