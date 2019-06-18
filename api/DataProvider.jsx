@@ -1,7 +1,38 @@
+/**
+ * This is a really a complicated React Class so bear with me
+ * as I explain to my future self how this works.
+ *
+ * You might want some coffee ☕️
+ *
+ * This component is responsible for fetching and storing all
+ * the data from firebase. Acts as a global store.
+ *
+ * On load, it checks if a user is logged in
+ *  - (yes): Fetches the list of all users and elections
+ *  - (no): Does nothing, literally
+ *
+ * If would have been pretty simple if this was it, but we have
+ * to think about loading.
+ *
+ * The state stores three things for loading
+ *  - authLoaded
+ *  - usersLoaded
+ *  - electionsLoaded
+ *
+ * If
+ *  - (user not logged in) all of them are set to true
+ *  - (user logged in) only authLoaded is set to true
+ *
+ * When the component is finished data fetching, it sets the
+ * corresponding states to true.
+ *
+ * The component only shows its child components when all
+ * loading variables becomes true. Else, it show's a loading screen.
+ */
+
 import React, { Component, createContext } from 'react';
 
 import { db, auth } from './firebase';
-
 import Loading from '../components/Loading';
 
 const DataContext = createContext({
@@ -15,14 +46,16 @@ export class DataProvider extends Component {
     elections: [],
     users: [],
     currentUser: {},
-    index: 0
+    authLoaded: false,
+    usersLoaded: false,
+    electionsLoaded: false
   };
 
   electionUnsubscriber = function() {};
   userUnsubscriber = function() {};
   currentUserUnsubscriber = function() {};
 
-  componentDidMount = () => {
+  subscribeToElections = () => {
     this.electionUnsubscriber = db
       .collection('elections')
       .onSnapshot(querySnapshot => {
@@ -32,29 +65,48 @@ export class DataProvider extends Component {
           elections.push(formatElectionDoc({ id: doc.id, ...doc.data() }));
         });
 
-        this.setState({ elections, index: this.state.index + 1 });
+        this.setState({ elections, electionsLoaded: true });
       });
+  };
 
+  subscribeToUsers = () => {
     this.userUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
       const users = [];
 
       querySnapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
 
-      this.setState({ users, index: this.state.index + 1 });
+      const { currentUser } = this.state;
+      if (currentUser) {
+        this.setState({
+          currentUser: users.find(user => user.id === currentUser.id)
+        });
+      }
 
-      this.currentUserUnsubscriber = auth.onAuthStateChanged(user => {
-        if (user) {
-          this.setState({
-            currentUser: {
-              ...users.find(user => user.id === auth.currentUser.uid)
-            }
-          });
-        } else {
-          this.setState({ currentUser: null });
-        }
+      this.setState({ users, usersLoaded: true });
+    });
+  };
 
-        this.setState({ index: this.state.index + 1 });
-      });
+  componentDidMount = () => {
+    this.currentUserUnsubscriber = auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({
+          currentUser: { id: user.uid },
+          electionsLoaded: false,
+          usersLoaded: false
+        });
+        this.subscribeToElections();
+        this.subscribeToUsers();
+      } else {
+        this.setState({
+          currentUser: null,
+          users: [],
+          elections: [],
+          electionsLoaded: true,
+          usersLoaded: true
+        });
+      }
+
+      this.setState({ authLoaded: true });
     });
   };
 
@@ -65,10 +117,22 @@ export class DataProvider extends Component {
   };
 
   render() {
-    const { elections, users, currentUser, index } = this.state;
+    const {
+      elections,
+      users,
+      currentUser,
+      authLoaded,
+      usersLoaded,
+      electionsLoaded
+    } = this.state;
+
     return (
       <DataContext.Provider value={{ elections, users, currentUser }}>
-        {index >= 3 ? this.props.children : <Loading />}
+        {authLoaded && usersLoaded && electionsLoaded ? (
+          this.props.children
+        ) : (
+          <Loading />
+        )}
       </DataContext.Provider>
     );
   }
