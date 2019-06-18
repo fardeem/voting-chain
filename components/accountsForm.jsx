@@ -28,11 +28,6 @@ const AccountsForm = ({}) => {
     e.preventDefault();
     NProgress.start();
 
-    const done = () => {
-      NProgress.done();
-      Router.push('/elections');
-    };
-
     const error = ({ code }) => {
       setError(auth.handleError(code));
       NProgress.done();
@@ -50,13 +45,13 @@ const AccountsForm = ({}) => {
               name: name
             });
         })
-        .then(done)
+        .then(() => NProgress.done())
         .catch(error);
     } else {
       // Login
       auth
         .signInWithEmailAndPassword(email, password)
-        .then(done)
+        .then(() => NProgress.done())
         .catch(error);
     }
 

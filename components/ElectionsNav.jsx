@@ -22,10 +22,7 @@ const ElectionsNav = () => {
           {currentUser.name ? currentUser.name : null}
         </p>
         <button
-          onClick={() => {
-            auth.signOut();
-            Router.push('/');
-          }}
+          onClick={() => auth.signOut()}
           className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Logout
