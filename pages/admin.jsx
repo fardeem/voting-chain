@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 import AdminElectionList from '../components/AdminElectionList';
 import AdminCreateForm from '../components/AdminCreateForm';
+import { auth } from '../api/firebase';
 
 const AdminPage = () => {
   const [isCreating, setIsCreating] = useState(false);
@@ -32,12 +33,19 @@ const AdminPage = () => {
             </h1>
           </div>
 
-          <div className="accounts">
+          <div>
             <button
               onClick={() => setIsCreating(!isCreating)}
-              className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 rounded focus:outline-none"
+              className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 mr-4 rounded focus:outline-none"
             >
               {isCreating ? 'Cancel' : 'Create Election'}
+            </button>
+
+            <button
+              onClick={() => auth.signOut()}
+              className="text-white bg-purple-600 cursor-pointer hover:bg-purple-500 text-sm font-bold py-2 px-4 rounded focus:outline-none"
+            >
+              Log Out
             </button>
           </div>
         </div>
