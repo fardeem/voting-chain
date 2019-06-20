@@ -4,6 +4,7 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 
 import firebase, { auth, handleAuthError } from '../api/firebase';
+import DataContext from '../api/DataProvider';
 import ElectionsNav from '../components/ElectionsNav';
 import Loading from '../components/Loading';
 
@@ -14,6 +15,12 @@ const Profile = () => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
+  const { currentUser } = useContext(DataContext);
+
+  if (!currentUser) {
+    Router.push('/');
+    return <Loading />;
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
