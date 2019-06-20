@@ -15,7 +15,7 @@ import NProgress from 'nprogress';
 import Head from 'next/head';
 
 import AccountsPage from '../layouts/accountsPage';
-import { auth } from '../api/firebase';
+import { auth, handleAuthError } from '../api/firebase';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -34,7 +34,7 @@ const ForgotPassword = () => {
       })
       .catch(({ code }) => {
         NProgress.done();
-        setError(auth.handleError(code));
+        setError(handleAuthError(code));
       });
   }
 

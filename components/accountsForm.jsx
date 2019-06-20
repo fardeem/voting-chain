@@ -10,11 +10,10 @@
  */
 
 import React, { useState } from 'react';
-import Router from 'next/router';
 import Head from 'next/head';
 import NProgress from 'nprogress';
 
-import { auth, db } from '../api/firebase';
+import { auth, db, handleAuthError } from '../api/firebase';
 
 const AccountsForm = ({}) => {
   const [name, setName] = useState('');
@@ -29,7 +28,7 @@ const AccountsForm = ({}) => {
     NProgress.start();
 
     const error = ({ code }) => {
-      setError(auth.handleError(code));
+      setError(handleAuthError(code));
       NProgress.done();
     };
 
@@ -75,6 +74,7 @@ const AccountsForm = ({}) => {
           </span>
           <input
             type="text"
+            required
             onChange={({ target }) => setName(target.value)}
             value={name}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -88,6 +88,7 @@ const AccountsForm = ({}) => {
         </span>
         <input
           type="email"
+          required
           onChange={({ target }) => setEmail(target.value)}
           value={email}
           autoComplete="email"
@@ -101,6 +102,7 @@ const AccountsForm = ({}) => {
         </span>
         <input
           type="password"
+          required
           onChange={({ target }) => setPassword(target.value)}
           value={password}
           autoComplete="current-password"

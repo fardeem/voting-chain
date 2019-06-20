@@ -16,7 +16,7 @@ const db = firebase.firestore();
  * Add a function to return error messages given an error message
  * for authentication
  */
-auth.handleError = function handleError(errorCode) {
+const handleAuthError = function handleError(errorCode) {
   switch (errorCode) {
     case 'auth/wrong-password':
       return 'Wrong password.';
@@ -34,4 +34,4 @@ auth.handleError = function handleError(errorCode) {
 };
 
 export default firebase;
-export { auth, db };
+export { auth, db, handleAuthError };
