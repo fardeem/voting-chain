@@ -9,7 +9,7 @@ const ElectionsNav = () => {
   const { currentUser } = useContext(DataContext);
   return (
     <div className="flex justify-between">
-      <nav>
+      <nav className="flex items-center">
         <Link href="/elections">
           <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider">
             All Elections
