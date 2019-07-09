@@ -53,8 +53,6 @@ const AccountsForm = ({}) => {
         .then(() => NProgress.done())
         .catch(error);
     }
-
-    console.log(email, password);
   }
 
   return (
