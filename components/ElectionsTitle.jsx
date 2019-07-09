@@ -26,7 +26,7 @@ const ElectionsTitle = ({ electionId }) => {
         <title>{title}</title>
       </Head>
 
-      <div className="text-center text-white mt-12">
+      <div className="text-center text-white mt-6">
         <p className="uppercase tracking-widest text-xs">&nbsp;{subtitle}</p>
         <h1 className="text-6xl font-light">{title}</h1>
       </div>
