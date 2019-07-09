@@ -1,26 +1,25 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import NProgress from 'nprogress';
 
-class Loading extends Component {
-  componentDidMount = () => {
+const Loading = () => {
+  useEffect(() => {
     NProgress.start();
-  };
 
-  componentWillUnmount = () => {
-    NProgress.done();
-  };
+    return () => {
+      NProgress.done();
+    };
+  });
 
-  render() {
-    return (
-      <>
-        <Head>
-          <title>Loading</title>
-        </Head>
-        <div className="w-full h-screen bg-pattern flex justify-center items-center" />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Head>
+        <title>Loading</title>
+      </Head>
+
+      <div className="w-full h-screen bg-pattern flex justify-center items-center" />
+    </>
+  );
+};
 
 export default Loading;
