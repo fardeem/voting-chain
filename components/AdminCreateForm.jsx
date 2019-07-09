@@ -109,7 +109,9 @@ const PositionsList = ({ list, updateList }) => {
   const [newPosition, setNewPosition] = useState('');
   const [error, setError] = useState('');
 
-  function addNewPosition() {
+  function addNewPosition(e) {
+    e.preventDefault();
+
     const key = newPosition
       .trim()
       .toLowerCase()
@@ -144,8 +146,7 @@ const PositionsList = ({ list, updateList }) => {
         ))}
       </ul>
 
-      <div className="flex flex-wrap">
-        <p className="w-full text-red-500 text-xs mb-1">{error}</p>
+      <form onSubmit={addNewPosition} className="flex flex-wrap">
         <input
           className="shadow flex-1 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
@@ -160,7 +161,6 @@ const PositionsList = ({ list, updateList }) => {
         >
           Add
         </button>
-      </div>
     </div>
   );
 };
