@@ -32,10 +32,9 @@ const AdminCreateForm = ({ show, setShow }) => {
   return (
     <div className="absolute flex justify-center w-full">
       <div
-        className={
-          'w-full max-w-2xl mt-4 shadow-2xl bg-white rounded p-8 transition-opacity ' +
-          (show ? 'z-10 opacity-100' : 'z-hide opacity-0')
-        }
+        className={`w-full max-w-2xl mt-4 shadow-2xl bg-white rounded p-8 transition-opacity ${
+          show ? 'z-10 opacity-100' : 'z-hide opacity-0'
+        }`}
         onClick={e => e.stopPropagation()}
       >
         <div className="flex">
