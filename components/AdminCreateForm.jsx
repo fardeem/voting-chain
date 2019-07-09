@@ -135,7 +135,7 @@ const PositionsList = ({ list, updateList }) => {
         Positions
       </label>
 
-      <ul className="mb-4">
+      <ul>
         {Object.keys(list).map(key => (
           <li
             key={key}
@@ -161,6 +161,8 @@ const PositionsList = ({ list, updateList }) => {
         >
           Add
         </button>
+        <p className="w-full text-red-500 text-xs mt-1">{error}</p>
+      </form>
     </div>
   );
 };
