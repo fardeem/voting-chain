@@ -8,6 +8,7 @@ const AdminCreateForm = ({ show, setShow }) => {
   const [positionsList, setPositionsList] = useState({});
 
   function handleSubmit() {
+    setShow(false);
 
     db.collection('elections')
       .add({
@@ -21,11 +22,14 @@ const AdminCreateForm = ({ show, setShow }) => {
         }, {})
       })
       .then(() => {
-        setShow(false);
         setName('');
         setStart('');
         setEnd('');
         setPositionsList('');
+      })
+      .catch(err => {
+        console.log(err);
+        setShow(true);
       });
   }
 
