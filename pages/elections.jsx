@@ -37,17 +37,6 @@ const ElectionsPage = ({ router }) => {
 
       <div className="content w-full rounded-t-lg -mt-2 bg-white">
         <div className="w-full max-w-4xl mx-auto px-8 pt-10">
-          {/* 
-            if query.id
-              if voting
-                votingpage
-              else
-                nominationspage
-            else
-              Elections list
-          
-          */}
-
           {(() => {
             if (electionId && currentElection) {
               if (currentElection.status === 'voting')
