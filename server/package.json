@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "winston-papertrail": "^1.0.5"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
