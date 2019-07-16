@@ -30,7 +30,7 @@
  * loading variables becomes true. Else, it show's a loading screen.
  */
 
-import React, { Component, createContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 import { db, auth } from './firebase';
 import Loading from '../components/Loading';
@@ -41,22 +41,20 @@ const DataContext = createContext({
   currentUser: {}
 });
 
-export class DataProvider extends Component {
-  state = {
-    elections: [],
-    users: [],
-    currentUser: {},
-    authLoaded: false,
-    usersLoaded: false,
-    electionsLoaded: false
-  };
+export const DataProvider = ({ children }) => {
+  const [elections, setElections] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [authLoaded, setAuthLoaded] = useState(false);
+  const [usersLoaded, setUsersLoaded] = useState(false);
+  const [electionsLoaded, setElectionsLoaded] = useState(false);
 
-  electionUnsubscriber = function() {};
-  userUnsubscriber = function() {};
-  currentUserUnsubscriber = function() {};
+  let electionUnsubscriber = function() {},
+    usersUnsubscriber = function() {},
+    currentUserUnsubscriber = function() {};
 
-  subscribeToElections = () => {
-    this.electionUnsubscriber = db
+  function subscribeToElections() {
+    electionUnsubscriber = db
       .collection('elections')
       .onSnapshot(querySnapshot => {
         const elections = [];
@@ -65,81 +63,61 @@ export class DataProvider extends Component {
           elections.push(formatElectionDoc({ id: doc.id, ...doc.data() }));
         });
 
-        this.setState({ elections, electionsLoaded: true });
+        setElections(elections);
+        setElectionsLoaded(true);
       });
-  };
+  }
 
-  subscribeToUsers = () => {
-    this.userUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
+  /**
+   * @param {string} currentUserId
+   */
+  function subscribeToUsers(currentUserId) {
+    usersUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
       const users = [];
 
       querySnapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
 
-      const { currentUser } = this.state;
-      if (currentUser) {
-        this.setState({
-          currentUser: users.find(user => user.id === currentUser.id)
-        });
-      }
-
-      this.setState({ users, usersLoaded: true });
+      setUsers(users);
+      setCurrentUser(users.find(user => user.id === currentUserId));
+      setUsersLoaded(true);
     });
-  };
-
-  componentDidMount = () => {
-    this.currentUserUnsubscriber = auth.onAuthStateChanged(user => {
-      if (user) {
-        this.setState({
-          currentUser: { id: user.uid },
-          electionsLoaded: false,
-          usersLoaded: false
-        });
-        this.subscribeToElections();
-        this.subscribeToUsers();
-      } else {
-        this.setState({
-          currentUser: null,
-          users: [],
-          elections: [],
-          electionsLoaded: true,
-          usersLoaded: true
-        });
-      }
-
-      this.setState({ authLoaded: true });
-    });
-  };
-
-  componentWillUnmount = () => {
-    this.electionUnsubscriber();
-    this.userUnsubscriber();
-    this.currentUserUnsubscriber();
-  };
-
-  render() {
-    const {
-      elections,
-      users,
-      currentUser,
-      authLoaded,
-      usersLoaded,
-      electionsLoaded
-    } = this.state;
-
-    return (
-      <DataContext.Provider value={{ elections, users, currentUser }}>
-        {authLoaded && usersLoaded && electionsLoaded ? (
-          this.props.children
-        ) : (
-          <Loading />
-        )}
-      </DataContext.Provider>
-    );
   }
-}
+
+  useEffect(() => {
+    currentUserUnsubscriber = auth.onAuthStateChanged(user => {
+      if (user) {
+        setElectionsLoaded(false);
+        setUsersLoaded(false);
+
+        subscribeToElections();
+        subscribeToUsers(user.uid);
+      } else {
+        setCurrentUser(null);
+        setUsers([]);
+        setElections([]);
+        setElectionsLoaded(true);
+        setUsersLoaded(true);
+      }
+
+      setAuthLoaded(true);
+    });
+
+    return () => {
+      electionUnsubscriber();
+      usersUnsubscriber();
+      currentUserUnsubscriber();
+    };
+  }, []);
+
+  return (
+    <DataContext.Provider value={{ elections, users, currentUser }}>
+      {authLoaded && usersLoaded && electionsLoaded ? children : <Loading />}
+    </DataContext.Provider>
+  );
+};
 
 /**
- * @param {{ [x: string]: any; id?: string; start?: any; end?: any; }} doc
+ * @param {{ id: string; start: any; end: any; [x: string]: any; }} doc
  */
 function formatElectionDoc(doc) {
   const { start, end, ...rest } = doc;
