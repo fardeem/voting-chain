@@ -12,6 +12,7 @@ import ElectionsTitle from '../components/ElectionsTitle';
 import ElectionsList from '../components/ElectionsList';
 import NominationsPage from '../components/NominationsPage';
 import VotingPage from '../components/VotingPage';
+import Loading from '../components/Loading';
 
 const ElectionsPage = ({ router }) => {
   const { elections, currentUser } = useContext(DataProvider);
@@ -23,6 +24,11 @@ const ElectionsPage = ({ router }) => {
   if (!currentUser) {
     Router.push('/');
     return null;
+  }
+
+  if (currentUser.role === 'admin') {
+    Router.push('/admin');
+    return <Loading />;
   }
 
   return (
