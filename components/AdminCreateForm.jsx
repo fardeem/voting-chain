@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../api/firebase';
 
 const AdminCreateForm = ({ show, setShow }) => {
@@ -6,6 +6,18 @@ const AdminCreateForm = ({ show, setShow }) => {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [positionsList, setPositionsList] = useState({});
+
+  useEffect(() => {
+    function closeOnEscape(e) {
+      if (e.key !== 'Escape') return;
+      setShow(false);
+    }
+
+    document.addEventListener('keyup', closeOnEscape);
+    return () => {
+      document.removeEventListener('keyup', closeOnEscape);
+    };
+  }, []);
 
   function handleSubmit() {
     setShow(false);
