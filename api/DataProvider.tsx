@@ -54,13 +54,31 @@ export const DataProvider = ({ children }) => {
     currentUserUnsubscriber = function() {};
 
   function subscribeToElections() {
+    function calcStatus(start: Date, end: Date): String {
+      const now = new Date();
+
+      if (now < start) return 'nominating';
+      else if (now > start && now < end) return 'voting';
+      else return 'done';
+    }
+
     electionUnsubscriber = db
       .collection('elections')
       .onSnapshot(querySnapshot => {
         const elections = [];
 
         querySnapshot.forEach(doc => {
-          elections.push(formatElectionDoc({ id: doc.id, ...doc.data() }));
+          const { start, end, ...rest } = doc.data();
+          const startTime = start.toDate();
+          const endTime = end.toDate();
+
+          elections.push({
+            id: doc.id,
+            start: startTime,
+            end: endTime,
+            ...rest,
+            status: calcStatus(startTime, endTime)
+          });
         });
 
         setElections(elections);
@@ -68,10 +86,7 @@ export const DataProvider = ({ children }) => {
       });
   }
 
-  /**
-   * @param {string} currentUserId
-   */
-  function subscribeToUsers(currentUserId) {
+  function subscribeToUsers(currentUserId: String) {
     usersUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
       const users = [];
 
@@ -115,29 +130,5 @@ export const DataProvider = ({ children }) => {
     </DataContext.Provider>
   );
 };
-
-/**
- * @param {{ id: string; start: any; end: any; [x: string]: any; }} doc
- */
-function formatElectionDoc(doc) {
-  const { start, end, ...rest } = doc;
-
-  const startTime = start.toDate();
-  const endTime = end.toDate();
-  const now = new Date();
-
-  let status;
-
-  if (now < startTime) status = 'nominating';
-  else if (now > startTime && now < endTime) status = 'voting';
-  else status = 'done';
-
-  return {
-    start: startTime,
-    end: endTime,
-    ...rest,
-    status
-  };
-}
 
 export default DataContext;
