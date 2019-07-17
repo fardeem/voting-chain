@@ -35,7 +35,7 @@ const List = ({ data, status }) => {
             <a className="text-md hover:text-purple-600">{name}</a>
           </Link>
 
-          <p className="italic text-sm font-serif text-gray-600">
+          <p className="italic text-xs text-gray-600">
             {(() => {
               if (status === 'voting')
                 return `Voting ends ${moment(end.toISOString()).fromNow()}`;
