@@ -38,7 +38,7 @@ import Loading from '../components/Loading';
 const DataContext = createContext({
   elections: [],
   users: [],
-  currentUser: {}
+  currentUser: null
 });
 
 export const DataProvider = ({ children }) => {
