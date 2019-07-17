@@ -12,7 +12,7 @@ const Loading = () => {
     return () => {
       timeout = setTimeout(() => {
         NProgress.done();
-      }, 600);
+      }, 1000);
     };
   }, []);
 
