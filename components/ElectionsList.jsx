@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import moment from 'moment';
 
-import DataContext from '../api/DataProvider.jsx';
+import DataContext from '../api/DataProvider';
 
 const ElectionsList = () => {
   const { elections } = useContext(DataContext);
