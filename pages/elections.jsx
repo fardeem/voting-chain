@@ -32,16 +32,16 @@ const ElectionsPage = ({ router }) => {
   }
 
   return (
-    <main className="min-h-screen">
-      <header className="bg-pattern">
-        <div className="w-full max-w-4xl mx-auto px-8 pt-6 pb-4 mb-6">
+    <main className="min-h-screen bg-pattern">
+      <header>
+        <div className="w-full max-w-4xl mx-auto px-8 pt-6 pb-4 mb-2">
           <ElectionsNav />
 
           <ElectionsTitle electionId={electionId} />
         </div>
       </header>
 
-      <div className="content w-full rounded-t-lg -mt-2 bg-white">
+      <div className="content w-full max-w-5xl rounded-lg -mt-2 mx-auto pb-6 bg-white">
         <div className="w-full max-w-4xl mx-auto px-8 pt-10">
           {(() => {
             if (electionId && currentElection) {
