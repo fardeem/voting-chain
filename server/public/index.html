@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Socket IO Testing</title>
+
+    <style>
+      body {
+        color: black;
+        background: white;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, 'Segoe UI',
+          'Fira Sans', Avenir, 'Helvetica Neue', 'Lucida Grande', sans-serif;
+        margin: 0;
+      }
+
+      header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      header h1 {
+        font-weight: 300;
+        border-right: 1px solid black;
+        padding-right: 1rem;
+      }
+
+      p {
+        padding-left: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Socket Server</h1>
+      <p>Used to mimick p2p connections without using webrtc</p>
+    </header>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.js"></script>
+  </body>
+</html>
