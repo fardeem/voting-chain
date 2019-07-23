@@ -1,5 +1,5 @@
 /**
- * This is a really a complicated React Class so bear with me
+ * This is a really a complicated React component so bear with me
  * as I explain to my future self how this works.
  *
  * You might want some coffee ☕️
