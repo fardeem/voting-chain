@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import NProgress from 'nprogress';
 
+import ec from '../api/curve';
 import { auth, db, handleAuthError } from '../api/firebase';
 
 const AccountsForm = ({}) => {
@@ -37,12 +38,24 @@ const AccountsForm = ({}) => {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
-          return db
+          const id = res.user.uid;
+
+          const key = ec.genKeyPair();
+
+          const createUser = db
             .collection('users')
-            .doc(res.user.uid)
+            .doc(id)
             .set({
-              name: name
+              name: name,
+              publicKey: key.getPublic('hex')
             });
+
+          const setPrivateKey = db
+            .collection('privateKeys')
+            .doc(id)
+            .set({ key: key.getPrivate('hex') });
+
+          return Promise.all([createUser, setPrivateKey]);
         })
         .then(() => NProgress.done())
         .catch(error);
