@@ -86,15 +86,26 @@ export const DataProvider = ({ children }) => {
       });
   }
 
-  function subscribeToUsers(currentUserId: String) {
+  function subscribeToUsers(currentUserId: string) {
     usersUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
       const users = [];
 
       querySnapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
-
       setUsers(users);
-      setCurrentUser(users.find(user => user.id === currentUserId));
-      setUsersLoaded(true);
+
+      db.collection(`privateKeys`)
+        .doc(currentUserId)
+        .get()
+        .then(doc => {
+          if (!doc.exists) return;
+
+          setCurrentUser({
+            ...users.find(user => user.id === currentUserId),
+            privateKey: doc.data().key
+          });
+
+          setUsersLoaded(true);
+        });
     });
   }
 
