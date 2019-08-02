@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 import DataProvider from '../api/DataProvider';
 
@@ -41,7 +41,7 @@ const AdminElectionList = () => {
                 Start
               </p>
               <time className="text-lg">
-                {moment(election.start).format('MMMM Do YYYY')}
+                {format(election.start, 'MMMM do, yyyy')}
               </time>
             </div>
 
@@ -50,7 +50,7 @@ const AdminElectionList = () => {
                 End
               </p>
               <time className="text-lg">
-                {moment(election.end).format('MMMM Do YYYY')}
+                {format(election.end, 'MMMM do, yyyy')}
               </time>
             </div>
 

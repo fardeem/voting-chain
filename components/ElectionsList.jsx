@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import moment from 'moment';
+import { formatDistance } from 'date-fns';
 
 import DataContext from '../api/DataProvider';
 
@@ -38,11 +38,20 @@ const List = ({ data, status }) => {
           <p className="italic text-xs text-gray-600">
             {(() => {
               if (status === 'voting')
-                return `Voting ends ${moment(end.toISOString()).fromNow()}`;
+                return `Voting ends in ${formatDistance(
+                  new Date(end.toISOString()),
+                  new Date()
+                )}`;
               else if (status === 'nominating')
-                return `Voting begins ${moment(start.toISOString()).fromNow()}`;
+                return `Voting begins in ${formatDistance(
+                  new Date(start.toISOString()),
+                  new Date()
+                )}`;
               else
-                return `Election ended ${moment(end.toISOString()).fromNow()}`;
+                return `Election ended ${formatDistance(
+                  new Date(end.toISOString()),
+                  new Date()
+                )} ago`;
             })()}
           </p>
         </li>
