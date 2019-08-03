@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
+    "@zeit/next-workers": "^1.0.0",
     "date-fns": "^2.0.0-beta.3",
     "elliptic": "^6.5.0",
     "firebase": "^6.1.1",
@@ -16,8 +17,10 @@
     "nprogress": "^0.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "sha.js": "^2.4.11",
     "socket.io-client": "^2.2.0",
     "tailwindcss": "^1.0.3"
+    "worker-loader": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^16.8.23",
