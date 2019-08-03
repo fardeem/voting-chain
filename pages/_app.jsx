@@ -9,6 +9,7 @@ import App, { Container } from 'next/app';
 import Head from 'next/head';
 
 import { DataProvider } from '../api/DataProvider';
+import { BlockchainProvider } from '../api/blockchain';
 
 import '../styles/main.css';
 
@@ -22,7 +23,9 @@ export default class MyApp extends App {
           <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
         </Head>
         <DataProvider>
-          <Component {...pageProps} />
+          <BlockchainProvider>
+            <Component {...pageProps} />
+          </BlockchainProvider>
         </DataProvider>
       </Container>
     );
