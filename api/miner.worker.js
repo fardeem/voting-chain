@@ -6,7 +6,7 @@ self.addEventListener('message', event => {
   let hash = '';
   let nonce = 0;
   const message = JSON.stringify(vote);
-  const difficulty = 4;
+  const difficulty = 3;
 
   while (
     hash.substring(0, difficulty) !==
