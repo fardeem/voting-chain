@@ -11,8 +11,13 @@ const ElectionsNav = () => {
     <div className="flex justify-between">
       <nav className="flex items-center">
         <Link href="/elections">
-          <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider">
+          <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider mr-4">
             All Elections
+          </a>
+        </Link>
+        <Link href="/blockchain">
+          <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider">
+            Blockchain
           </a>
         </Link>
       </nav>
