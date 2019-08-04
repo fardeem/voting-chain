@@ -14,11 +14,14 @@ const socket = io('localhost:8500');
 // Interfaces
 //====================
 
-interface Vote {
+interface VoteInfo {
   to: string;
-  from: string;
   electionId: string;
   position: string;
+}
+
+interface Vote extends VoteInfo {
+  from: string;
   timestamp: number;
   signature: string;
 }
@@ -53,34 +56,7 @@ export const BlockchainProvider = ({ children }) => {
 
   const { currentUser, users } = useContext(DataContext);
 
-  function castVote({
-    to,
-    electionId,
-    position
-  }: {
-    to: string;
-    electionId: string;
-    position: string;
-  }) {
-    const key = ec.keyFromPrivate(currentUser.privateKey, 'hex');
-
-    const vote: Vote = {
-      to,
-      electionId,
-      position,
-      timestamp: Date.now(),
-      from: auth.currentUser.uid,
-      signature: ''
-    };
-
-    const voteHash = hashVote(vote);
-    vote.signature = key.sign(voteHash, 'base64').toDER('hex');
-
-    return broadcastToNetwork(JSON.stringify(vote), 'VOTE');
-  }
-
   useEffect(() => {
-    console.log('going on');
     socket.on('MINE', (vote: Vote) => {
       const fromUser = users.find(user => user.id === vote.from);
       const publicKey = ec.keyFromPublic(fromUser.publicKey, 'hex');
@@ -91,7 +67,6 @@ export const BlockchainProvider = ({ children }) => {
     });
 
     return () => {
-      console.log('Going off');
       socket.off('MINE');
     };
   }, []);
@@ -119,7 +94,13 @@ export const BlockchainProvider = ({ children }) => {
 
   return (
     <BlockchainContext.Provider
-      value={{ blockchain: [], miningQueue, castVote }}
+      value={{
+        blockchain: [],
+        miningQueue,
+        castVote: (vote: VoteInfo) => {
+          return castVote(vote, currentUser.privateKey);
+        }
+      }}
     >
       {children}
     </BlockchainContext.Provider>
@@ -136,6 +117,24 @@ function hashVote(vote: Vote): string {
       vote.from + vote.to + vote.electionId + vote.position + vote.timestamp
     )
     .digest('hex');
+}
+
+function castVote({ to, electionId, position }: VoteInfo, privateKey: string) {
+  const key = ec.keyFromPrivate(privateKey, 'hex');
+
+  const vote: Vote = {
+    to,
+    electionId,
+    position,
+    timestamp: Date.now(),
+    from: auth.currentUser.uid,
+    signature: ''
+  };
+
+  const voteHash = hashVote(vote);
+  vote.signature = key.sign(voteHash, 'base64').toDER('hex');
+
+  return broadcastToNetwork(JSON.stringify(vote), 'VOTE');
 }
 
 type BroadcastAction = 'BLOCK' | 'VOTE';
