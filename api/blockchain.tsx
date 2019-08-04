@@ -2,6 +2,7 @@ import React, {
   useState,
   useEffect,
   useContext,
+  useRef,
   createContext,
   useReducer
 } from 'react';
@@ -60,8 +61,8 @@ export const BlockchainProvider = ({ children }) => {
   const [miningQueue, setMiningQueue] = useState<Array<Vote>>([]);
   const [isMining, setIsMining] = useState(false);
 
-  let chainPreviousHash = genesisBlock.hash;
   const [blockchain, dispatch] = useReducer(blockchainReducer, [genesisBlock]);
+  const chainPreviousHashRef = useRef(genesisBlock.hash);
 
   const { currentUser, users } = useContext(DataContext);
 
@@ -97,7 +98,7 @@ export const BlockchainProvider = ({ children }) => {
 
     miner.postMessage({
       vote: transaction,
-      previousHash: chainPreviousHash
+      previousHash: chainPreviousHashRef.current
     });
 
     setMiningQueue(miningQueue.splice(1, miningQueue.length));
