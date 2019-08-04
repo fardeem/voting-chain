@@ -54,6 +54,9 @@ export const BlockchainProvider = ({ children }) => {
   const [miningQueue, setMiningQueue] = useState<Array<Vote>>([]);
   const [isMining, setIsMining] = useState(false);
 
+  const [blockchain, setBlockchain] = useState<Array<Block>>([genesisBlock]);
+  let chainPreviousHash = genesisBlock.hash;
+
   const { currentUser, users } = useContext(DataContext);
 
   useEffect(() => {
@@ -79,7 +82,7 @@ export const BlockchainProvider = ({ children }) => {
 
     miner.postMessage({
       vote: transaction,
-      previousHash: '0'
+      previousHash: chainPreviousHash
     });
 
     setMiningQueue(miningQueue.splice(1, miningQueue.length));
@@ -87,15 +90,28 @@ export const BlockchainProvider = ({ children }) => {
 
     miner.addEventListener('message', ({ data: block }: { data: Block }) => {
       // Broadcast to network that this is a new block
-      console.log(block);
-      setIsMining(false);
+      broadcastToNetwork(JSON.stringify(block), 'BLOCK').then(() => {
+        setIsMining(false);
+      });
     });
   }, [miningQueue, isMining]);
+
+  useEffect(() => {
+    socket.on('BLOCK', (block: Block) => {
+      console.log(block);
+      setBlockchain(chain => [...chain, block]);
+      chainPreviousHash = block.hash;
+    });
+
+    return () => {
+      socket.off('BLOCK');
+    };
+  }, []);
 
   return (
     <BlockchainContext.Provider
       value={{
-        blockchain: [],
+        blockchain,
         miningQueue,
         castVote: (vote: VoteInfo) => {
           return castVote(vote, currentUser.privateKey);
@@ -155,3 +171,10 @@ function broadcastToNetwork(body: string, action: BroadcastAction) {
     body
   });
 }
+
+const genesisBlock: Block = {
+  hash: '0008a5469e5cb0d2c2844a18efaf8fc723e100b08c34485b784e04fce79166f9',
+  previousHash: '0',
+  nonce: 194,
+  vote: null
+};
