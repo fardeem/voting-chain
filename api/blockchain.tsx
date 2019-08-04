@@ -66,6 +66,11 @@ export const BlockchainProvider = ({ children }) => {
   const [blockchain, dispatch] = useReducer(blockchainReducer, [genesisBlock]);
   const chainPreviousHashRef = useRef(genesisBlock.hash);
 
+  useEffect(function() {
+    fetch('http://localhost:8500/blockchain')
+      .then(res => res.json())
+      .then(data => dispatch({ type: 'UPDATE', value: data }));
+  }, []);
 
   /**
    * Send votes to mining queue
@@ -207,7 +212,6 @@ const genesisBlock: Block = {
 };
 
 function getLongestChain(blockchain: Block[]) {
-  console.log(blockchain);
   const found = [];
 
   function buildLink(parent: Block, history = []) {
