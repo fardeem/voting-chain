@@ -107,12 +107,12 @@ export const BlockchainProvider = ({ children }) => {
       previousHash: chainPreviousHashRef.current
     });
 
-    setMiningQueue(miningQueue.splice(1, miningQueue.length));
     setIsMining(true);
 
     miner.addEventListener('message', ({ data: block }: { data: Block }) => {
       // Broadcast to network that this is a new block
       broadcastToNetwork(JSON.stringify(block), 'BLOCK').then(() => {
+        setMiningQueue(miningQueue.splice(1, miningQueue.length));
         setIsMining(false);
       });
     });
