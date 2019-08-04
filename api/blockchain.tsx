@@ -117,9 +117,7 @@ export const BlockchainProvider = ({ children }) => {
    */
   useEffect(() => {
     socket.on('BLOCK', (block: Block) => {
-      console.log(block);
-      setBlockchain(chain => [...chain, block]);
-      chainPreviousHash = block.hash;
+      dispatch({ type: 'UPDATE', value: [block] });
     });
 
     return () => {
