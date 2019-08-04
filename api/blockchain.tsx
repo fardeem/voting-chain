@@ -237,16 +237,26 @@ function blockchainReducer(blockchain: Block[], action: BlockchainActions) {
   if (action.type !== 'UPDATE') throw new Error('HOBE NAH TOH!');
 
   const updates = [];
-  action.value.forEach(update => {
+  action.value.forEach(newBlock => {
+    const calculatedHash = shajs('sha256')
+      .update(
+        JSON.stringify(newBlock.vote) +
+          newBlock.previousHash +
+          String(newBlock.nonce)
+      )
+      .digest('hex');
+
     if (
       blockchain.find(
         block =>
-          block.hash === update.hash &&
-          block.previousHash === update.previousHash
-      )
+          block.hash === newBlock.hash &&
+          block.previousHash === newBlock.previousHash
+      ) &&
+      calculatedHash === newBlock.hash
     )
       return;
-    updates.push(update);
+
+    updates.push(newBlock);
   });
 
   return [...blockchain, ...updates];
