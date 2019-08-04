@@ -12,10 +12,10 @@ self.addEventListener('message', event => {
     hash.substring(0, difficulty) !==
     [...Array(difficulty)].map(() => '0').join('')
   ) {
+    nonce++;
     hash = shajs('sha256')
       .update(message + previousHash + String(nonce))
       .digest('hex');
-    nonce++;
   }
 
   self.postMessage({
