@@ -191,3 +191,24 @@ const genesisBlock: Block = {
   nonce: 194,
   vote: null
 };
+
+function getLongestChain(blockchain: Block[]) {
+  console.log(blockchain);
+  const found = [];
+
+  function buildLink(parent: Block, history = []) {
+    var next = blockchain.filter(item => item.previousHash === parent.hash);
+
+    if (next.length === 0) {
+      return found.push([parent, ...history]);
+    } else {
+      return next.forEach(item => {
+        return buildLink(item, [parent, ...history]);
+      });
+    }
+  }
+
+  buildLink(blockchain.find(block => block.previousHash === '0'));
+
+  return found.sort((a, b) => b.length - a.length)[0];
+}
