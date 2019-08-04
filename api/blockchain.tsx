@@ -59,6 +59,10 @@ export const BlockchainProvider = ({ children }) => {
 
   const { currentUser, users } = useContext(DataContext);
 
+  /**
+   * Send votes to mining queue
+   * Check that signature matches with public key
+   */
   useEffect(() => {
     socket.on('MINE', (vote: Vote) => {
       const fromUser = users.find(user => user.id === vote.from);
@@ -74,6 +78,11 @@ export const BlockchainProvider = ({ children }) => {
     };
   }, []);
 
+  /**
+   * Listen to mining queue
+   * Mine votes one by one
+   * Broadcast votes to network
+   */
   useEffect(() => {
     if (miningQueue.length === 0 || isMining) return;
 
@@ -96,6 +105,10 @@ export const BlockchainProvider = ({ children }) => {
     });
   }, [miningQueue, isMining]);
 
+  /**
+   * Listen on socket for new blocks
+   * Add them to the chain
+   */
   useEffect(() => {
     socket.on('BLOCK', (block: Block) => {
       console.log(block);
