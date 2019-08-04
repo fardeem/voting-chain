@@ -45,6 +45,26 @@ app.post('/new-block', function(req, res) {
   res.send('Received');
 });
 
+app.get('/blockchain', function(req, res) {
+  const values = [];
+
+  db.createReadStream()
+    .on('data', function(data) {
+      // console.log(data.key, '=', data.value);
+      values.push(data.value);
+    })
+    .on('error', function(err) {
+      console.log('Oh my!', err);
+    })
+    .on('close', function() {
+      console.log('Stream closed');
+      res.json(values);
+      // console.log(values);
+    })
+    .on('end', function() {
+      console.log('Stream ended');
+    });
+});
 /**
  * Start server
  */
