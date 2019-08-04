@@ -58,13 +58,14 @@ export default BlockchainContext;
 //====================
 
 export const BlockchainProvider = ({ children }) => {
+  const { currentUser, users } = useContext(DataContext);
+
   const [miningQueue, setMiningQueue] = useState<Array<Vote>>([]);
   const [isMining, setIsMining] = useState(false);
 
   const [blockchain, dispatch] = useReducer(blockchainReducer, [genesisBlock]);
   const chainPreviousHashRef = useRef(genesisBlock.hash);
 
-  const { currentUser, users } = useContext(DataContext);
 
   /**
    * Send votes to mining queue
