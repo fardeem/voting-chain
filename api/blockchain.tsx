@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  useReducer
+} from 'react';
 import shajs from 'sha.js';
 import io from 'socket.io-client';
 
@@ -54,8 +60,8 @@ export const BlockchainProvider = ({ children }) => {
   const [miningQueue, setMiningQueue] = useState<Array<Vote>>([]);
   const [isMining, setIsMining] = useState(false);
 
-  const [blockchain, setBlockchain] = useState<Array<Block>>([genesisBlock]);
   let chainPreviousHash = genesisBlock.hash;
+  const [blockchain, dispatch] = useReducer(blockchainReducer, [genesisBlock]);
 
   const { currentUser, users } = useContext(DataContext);
 
@@ -211,4 +217,25 @@ function getLongestChain(blockchain: Block[]) {
   buildLink(blockchain.find(block => block.previousHash === '0'));
 
   return found.sort((a, b) => b.length - a.length)[0];
+}
+
+type BlockchainActions = { type: 'UPDATE'; value: Block[] };
+
+function blockchainReducer(blockchain: Block[], action: BlockchainActions) {
+  if (action.type !== 'UPDATE') throw new Error('HOBE NAH TOH!');
+
+  const updates = [];
+  action.value.forEach(update => {
+    if (
+      blockchain.find(
+        block =>
+          block.hash === update.hash &&
+          block.previousHash === update.previousHash
+      )
+    )
+      return;
+    updates.push(update);
+  });
+
+  return [...blockchain, ...updates];
 }
