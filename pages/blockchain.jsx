@@ -1,12 +1,16 @@
 import React, { Component, useState, useEffect, useContext } from 'react';
+import Head from 'next/head';
 
 import BlockchainContext from '../api/blockchain';
 
-const Socket = () => {
+const Blockchain = () => {
   const { blockchain, castVote, miningQueue } = useContext(BlockchainContext);
 
   return (
     <div>
+      <Head>
+        <title>Blockchain Explorer</title>
+      </Head>
       <div>
         <h1>Hello</h1>
 
@@ -23,7 +27,7 @@ const Socket = () => {
           Add vote
         </button>
 
-        {/* <div>
+        <div>
           <h1 className="text-lg">In queue</h1>
           <ul>
             {miningQueue.map((vote, index) => (
@@ -33,7 +37,7 @@ const Socket = () => {
               </li>
             ))}
           </ul>
-        </div> */}
+        </div>
 
         <hr />
 
@@ -41,12 +45,17 @@ const Socket = () => {
           <h1 className="text-2xl">Blockchain</h1>
 
           <ul>
-            {blockchain.map((block, index) => (
-              <li key={index}>
-                Hash: {block.hash}, previousHash: {block.previousHash}, vote:{' '}
-                {JSON.stringify(block.vote)}
-              </li>
-            ))}
+            {blockchain
+              .sort((a, b) => {
+                return a.hash === b.previousHash ? -1 : 1;
+              })
+              .map((block, index) => (
+                <li className="text-xs font-mono" key={index}>
+                  Hash: {block.hash}{' '}
+                  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{' '}
+                  previousHash: {block.previousHash}
+                </li>
+              ))}
           </ul>
         </div>
       </div>
@@ -54,4 +63,4 @@ const Socket = () => {
   );
 };
 
-export default Socket;
+export default Blockchain;
