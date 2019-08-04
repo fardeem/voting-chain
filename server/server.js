@@ -65,6 +65,24 @@ app.get('/blockchain', function(req, res) {
       console.log('Stream ended');
     });
 });
+
+app.post('/clear-chain', function(_, res) {
+  const values = [];
+
+  db.createKeyStream()
+    .on('data', function(data) {
+      values.push(data);
+    })
+    .on('close', function() {
+      const operations = values.map(key => ({ type: 'del', key }));
+
+      db.batch(operations, function(err) {
+        if (err) res.send(err);
+        res.send(err);
+      });
+    });
+});
+
 /**
  * Start server
  */
