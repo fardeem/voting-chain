@@ -127,6 +127,14 @@ export const BlockchainProvider = ({ children }) => {
     };
   }, []);
 
+  /**
+   * Update previous hash for next block,
+   * everytime the blockchain is updated
+   */
+  useEffect(() => {
+    chainPreviousHashRef.current = getLongestChain(blockchain)[0].hash;
+  }, [blockchain]);
+
   return (
     <BlockchainContext.Provider
       value={{
