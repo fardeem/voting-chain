@@ -55,11 +55,11 @@ const Profile = () => {
       </Head>
 
       <header>
-        <div className="w-full max-w-4xl mx-auto px-8 pt-6 pb-4 mb-2">
+        <div className="w-full max-w-4xl mx-auto px-8 pt-6 pb-4 mb-6">
           <ElectionsNav />
 
           <div className="text-center text-white mt-10">
-            <h1 className="text-6xl font-light">Your Profile</h1>
+            <h1 className="text-6xl font-light leading-none">Your Profile</h1>
           </div>
         </div>
       </header>

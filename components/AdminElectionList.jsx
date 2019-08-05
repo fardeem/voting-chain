@@ -29,14 +29,14 @@ const AdminElectionList = () => {
               {election.status === 'done' ? 'finished' : election.status}
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <p className="text-sm tracking-wider uppercase text-gray-600">
                 Name
               </p>
               <h1 className="text-xl">{election.name}</h1>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <p className="text-sm tracking-wider uppercase text-gray-600">
                 Start
               </p>
@@ -45,7 +45,7 @@ const AdminElectionList = () => {
               </time>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <p className="text-sm tracking-wider uppercase text-gray-600">
                 End
               </p>
@@ -54,7 +54,7 @@ const AdminElectionList = () => {
               </time>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <p className="text-sm tracking-wider uppercase text-gray-600">
                 Positions
               </p>
