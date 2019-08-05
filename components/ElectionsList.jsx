@@ -17,8 +17,10 @@ const ElectionsList = () => {
           </h1>
 
           <List
-            data={elections.filter(e => e.status === state)}
             status={state}
+            data={elections
+              .filter(e => e.status === state)
+              .sort((a, b) => (a.end < b.end ? 1 : -1))}
           />
         </div>
       ))}
