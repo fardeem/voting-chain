@@ -1,65 +1,28 @@
-import React, { Component, useState, useEffect, useContext } from 'react';
+import React from 'react';
 import Head from 'next/head';
 
-import BlockchainContext from '../api/blockchain';
+import ElectionsNav from '../components/ElectionsNav';
+import BlockList from '../components/BlockList';
 
 const Blockchain = () => {
-  const { blockchain, castVote, miningQueue } = useContext(BlockchainContext);
-
   return (
-    <div>
+    <main className="bg-pattern">
       <Head>
-        <title>Blockchain Explorer</title>
+        <title>Profile</title>
       </Head>
-      <div>
-        <h1>Hello</h1>
 
-        <button
-          className="bg-gray-300 p-1"
-          onClick={() => {
-            castVote({
-              to: 'Wamia',
-              electionId: '12345555',
-              position: 'cookier_monster'
-            });
-          }}
-        >
-          Add vote
-        </button>
+      <header>
+        <div className="w-full max-w-4xl mx-auto px-8 pt-6 pb-4 mb-6">
+          <ElectionsNav />
 
-        <div>
-          <h1 className="text-lg">In queue</h1>
-          <ul>
-            {miningQueue.map((vote, index) => (
-              <li key={index}>
-                From {vote.from} to {vote.to} for {vote.electionId} in position{' '}
-                {vote.electionId}
-              </li>
-            ))}
-          </ul>
+          <div className="text-center text-white mt-10">
+            <h1 className="text-6xl font-light leading-none">Blockchain</h1>
+          </div>
         </div>
+      </header>
 
-        <hr />
-
-        <div className="border-gray-900 border-t-2">
-          <h1 className="text-2xl">Blockchain</h1>
-
-          <ul>
-            {blockchain
-              .sort((a, b) => {
-                return a.hash === b.previousHash ? -1 : 1;
-              })
-              .map((block, index) => (
-                <li className="text-xs font-mono" key={index}>
-                  Hash: {block.hash}{' '}
-                  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{' '}
-                  previousHash: {block.previousHash}
-                </li>
-              ))}
-          </ul>
-        </div>
-      </div>
-    </div>
+      <BlockList />
+    </main>
   );
 };
 
