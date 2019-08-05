@@ -2,9 +2,13 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 
 import DataProvider from '../api/DataProvider';
+import { useRouter } from 'next/router';
 
-const ElectionsTitle = ({ electionId }) => {
+const ElectionsTitle = () => {
+  const router = useRouter();
   const { elections } = useContext(DataProvider);
+
+  const electionId = router.query.id;
   let title = 'All Elections';
   let subtitle = '';
 
@@ -17,7 +21,7 @@ const ElectionsTitle = ({ electionId }) => {
     else if (status === 'nominating') subtitle = 'nominate candidates';
     else subtitle = 'See results';
 
-    subtitle += ' for the election';
+    // subtitle += ' for the election';
   }
 
   return (
@@ -28,7 +32,7 @@ const ElectionsTitle = ({ electionId }) => {
 
       <div className="text-center text-white mt-6">
         <p className="uppercase tracking-widest text-xs">&nbsp;{subtitle}</p>
-        <h1 className="text-6xl font-light">{title}</h1>
+        <h1 className="text-6xl font-light leading-none">{title}</h1>
       </div>
     </>
   );
