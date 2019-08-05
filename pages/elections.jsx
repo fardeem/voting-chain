@@ -44,14 +44,17 @@ const ElectionsPage = ({ router }) => {
         <div className="w-full max-w-4xl mx-auto px-8 pt-10">
           {(() => {
             if (electionId && currentElection) {
-              if (currentElection.status === 'voting')
-                return <VotingPage context={currentElection} />;
-              else if (currentElection.status === 'nominating')
-                return <NominationsPage context={currentElection} />;
-              else return <h1>Results</h1>;
-            } else {
-              return <ElectionsList />;
+              switch (currentElection.status) {
+                case 'voting':
+                  return <VotingPage context={currentElection} />;
+                case 'nominating':
+                  return <NominationsPage context={currentElection} />;
+                default:
+                  return <h1>Results</h1>;
+              }
             }
+
+            return <ElectionsList />;
           })()}
         </div>
       </div>
