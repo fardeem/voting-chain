@@ -24,7 +24,7 @@ const ElectionsNav = () => {
       <div className="accounts flex items-center">
         <Link href="/profile">
           <a className="mr-4 text-gray-300 hover:text-white text-sm font-bold tracking-wider">
-            {currentUser.name ? currentUser.name : null}
+            {currentUser.name}
           </a>
         </Link>
 

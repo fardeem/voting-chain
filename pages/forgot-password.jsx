@@ -59,13 +59,13 @@ const ForgotPassword = () => {
           />
         </label>
 
-        {success.length !== 0 ? (
+        {success.length !== 0 && (
           <p className="text-green-500 text-xs italic mb-2">{success}</p>
-        ) : null}
+        )}
 
-        {error.length !== 0 ? (
+        {error.length !== 0 && (
           <p className="text-red-500 text-xs italic mb-2">{error}</p>
-        ) : null}
+        )}
 
         <div className="flex items-center justify-between">
           <input

@@ -29,7 +29,15 @@ const ElectionsList = () => {
 };
 
 const List = ({ data, status }) => {
-  return data.length !== 0 ? (
+  if (data.length === 0) {
+    return (
+      <div className="empty font-extrabold text-3xl select-none text-gray-300">
+        Nothing To See Here
+      </div>
+    );
+  }
+
+  return (
     <ul>
       {data.map(({ id, name, start, end }) => (
         <li key={id} className="mb-4">
@@ -59,10 +67,6 @@ const List = ({ data, status }) => {
         </li>
       ))}
     </ul>
-  ) : (
-    <div className="empty font-extrabold text-3xl select-none text-gray-300">
-      Nothing To See Here
-    </div>
   );
 };
 
