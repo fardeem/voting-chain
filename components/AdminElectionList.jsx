@@ -6,11 +6,11 @@ import DataProvider from '../api/DataProvider';
 const AdminElectionList = () => {
   const { elections } = useContext(DataProvider);
   return (
-    <div className="flex flex-wrap -mr-8 mt-8">
+    <div className="sm:flex flex-wrap -mr-8 mt-8">
       {elections
         .sort((a, b) => b.start - a.start)
         .map(election => (
-          <div key={election.id} className="w-1/3 rounded pr-8">
+          <div key={election.id} className="w-full sm:w-1/3 rounded pr-8 mb-20">
             <div
               className={
                 'px-4 py-2 inline-block rounded uppercase font-bold text-white tracking-widest text-xs mb-4 ' +

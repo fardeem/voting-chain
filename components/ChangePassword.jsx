@@ -45,7 +45,7 @@ const ChangePassword = () => {
             Current Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="password"
             value={currentPass}
             onChange={e => setCurrentPass(e.target.value)}
@@ -57,7 +57,7 @@ const ChangePassword = () => {
             New Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="password"
             value={pass}
             onChange={e => setPass(e.target.value)}
@@ -69,7 +69,7 @@ const ChangePassword = () => {
 
         <p className="text-red-500 text-xs italic mb-2">{error}</p>
 
-        <button className="shadow flex-shrink-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           Submit
         </button>
       </form>

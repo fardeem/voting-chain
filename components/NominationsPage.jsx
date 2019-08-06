@@ -8,9 +8,9 @@ const NominationsPage = ({ context }) => {
   const { id, positions, nominations } = context;
 
   return (
-    <div className="flex flex-wrap -mr-8">
+    <div className="md:flex flex-wrap -mr-8">
       {Object.keys(positions).map((key, index) => (
-        <div className="w-1/3 pr-8 mb-40" key={index}>
+        <div className="w-full md:w-1/3 pr-8 mb-20" key={index}>
           <h1 className="text-sm font-bold border-purple-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
             {positions[key]}
           </h1>
@@ -66,10 +66,10 @@ const NominateUser = ({ options, position, electionId }) => {
   }
 
   return (
-    <form className="w-full max-w-sm mb-6" onSubmit={handleSubmit}>
+    <form className="w-full  mb-6" onSubmit={handleSubmit}>
       <div className="flex">
         <select
-          className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 mr-3 px-2 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+          className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 mr-3 px-2 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
           value={selectedUser}
           onChange={e => setSelectedUser(e.target.value)}
         >
@@ -84,7 +84,7 @@ const NominateUser = ({ options, position, electionId }) => {
         </select>
 
         <button
-          className="flex-shrink-0 bg-purple-500 hover:bg-purple-600 border-purple-500 hover:border-purple-600 text-sm border-4 shadow text-white py-1 px-2 rounded"
+          className="flex-shrink-0 bg-purple-500 hover:bg-purple-600 border-purple-500 hover:border-purple-600 text-sm border-4 text-white py-1 px-2 rounded"
           type="submit"
         >
           Nominate

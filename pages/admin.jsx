@@ -30,13 +30,13 @@ const AdminPage = () => {
       </Head>
 
       <header className="bg-pattern">
-        <div className="flex justify-between items-center w-full max-w-3xl mx-auto py-6 mb-4">
+        <div className="flex justify-between items-center w-full max-w-4xl mx-auto px-8 py-6 mb-4">
           <div>
             <p className="text-gray-600 text-sm uppercase font-bold tracking-widest">
               Admin DashBoard
             </p>
             <h1 className="text-white text-4xl font-light">
-              {isCreating ? 'Create New Election' : 'All Election'}
+              {isCreating ? 'New Election' : 'All Election'}
             </h1>
           </div>
 
@@ -59,7 +59,7 @@ const AdminPage = () => {
       </header>
 
       <div className="content w-full rounded-t-lg -mt-2 bg-white">
-        <div className="relative w-full max-w-3xl mx-auto pt-4">
+        <div className="relative w-full max-w-4xl mx-auto px-8 pt-4">
           <AdminCreateForm show={isCreating} setShow={setIsCreating} />
           <div
             className={
