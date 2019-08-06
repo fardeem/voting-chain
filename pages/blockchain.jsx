@@ -8,7 +8,7 @@ const Blockchain = () => {
   return (
     <main className="bg-pattern">
       <Head>
-        <title>Profile</title>
+        <title>Blockchain Explorer</title>
       </Head>
 
       <header>
