@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
 
 import { auth } from '../api/firebase';
 import DataContext from '../api/DataProvider';
