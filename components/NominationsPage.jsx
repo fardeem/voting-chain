@@ -1,11 +1,16 @@
 import React, { useState, useContext } from 'react';
+import { useRouter } from 'next/router';
 
-import DataProvider from '../api/DataProvider';
+import DataContext from '../api/DataProvider';
 import NominateUser from './NominateUser';
 
-const NominationsPage = ({ context }) => {
-  const { users } = useContext(DataProvider);
-  const { id, positions, nominations } = context;
+const NominationsPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const { users, elections } = useContext(DataContext);
+  const { positions, nominations } = elections.find(
+    election => election.id === id
+  );
 
   return (
     <div className="md:flex flex-wrap -mr-8">

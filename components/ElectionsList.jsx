@@ -41,7 +41,7 @@ const List = ({ data, status }) => {
     <ul>
       {data.map(({ id, name, start, end }) => (
         <li key={id} className="mb-4">
-          <Link href={`/elections?id=${id}`}>
+          <Link href="/elections/[id]" as={`/elections/${id}`}>
             <a className="text-md hover:text-purple-600">{name}</a>
           </Link>
 

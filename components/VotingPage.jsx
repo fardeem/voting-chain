@@ -1,11 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
+import { useRouter } from 'next/router';
 
 import DataContext from '../api/DataProvider';
 import VoteForUser from './VoteForUser';
 
-const VotingPage = ({ context }) => {
-  const { users } = useContext(DataContext);
-  const { id, positions, nominations } = context;
+const VotingPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const { users, elections } = useContext(DataContext);
+  const { positions, nominations } = elections.find(
+    election => election.id === id
+  );
 
   return (
     <div className="">
