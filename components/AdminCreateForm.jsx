@@ -162,6 +162,16 @@ const PositionsList = ({ list, updateList }) => {
             className="inline-block px-2 py-1 bg-gray-300 rounded-lg mr-3 mb-3 text-sm"
           >
             {list[key]}
+            <span
+              className="ml-2 cursor-pointer text-gray-500 hover:text-black"
+              onClick={() => {
+                const newList = { ...list };
+                delete newList[key];
+                updateList(newList);
+              }}
+            >
+              &times;
+            </span>
           </li>
         ))}
       </ul>
