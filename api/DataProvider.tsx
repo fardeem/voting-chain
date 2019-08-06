@@ -56,6 +56,10 @@ interface User {
   role?: string;
 }
 
+interface CurrentUser extends User {
+  privateKey: string;
+}
+
 interface Context {
   elections: Election[];
   users: User[];
