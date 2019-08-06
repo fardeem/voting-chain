@@ -6,7 +6,7 @@ import BlockList from '../components/BlockList';
 
 const Blockchain = () => {
   return (
-    <main className="bg-pattern">
+    <main className="min-h-screen bg-pattern">
       <Head>
         <title>Blockchain Explorer</title>
       </Head>
