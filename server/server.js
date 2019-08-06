@@ -9,7 +9,7 @@ const http = require('http').createServer(app);
 const port = process.env.PORT || 8500;
 
 const level = require('level');
-const db = level('../blockchain.db', { valueEncoding: 'json' });
+const db = level('./blockchain.db', { valueEncoding: 'json' });
 
 /**
  * Express Setup
