@@ -19,6 +19,17 @@ const AdminCreateForm = ({ show, setShow }) => {
     };
   }, []);
 
+  useEffect(() => {
+    resetForm();
+  }, [show]);
+
+  function resetForm() {
+    setName('');
+    setStart('');
+    setEnd('');
+    setPositionsList('');
+  }
+
   function handleSubmit() {
     setShow(false);
 
@@ -34,10 +45,7 @@ const AdminCreateForm = ({ show, setShow }) => {
         }, {})
       })
       .then(() => {
-        setName('');
-        setStart('');
-        setEnd('');
-        setPositionsList('');
+        resetForm();
       })
       .catch(err => {
         console.log(err);
