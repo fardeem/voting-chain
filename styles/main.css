@@ -88,3 +88,11 @@
 .transition-opacity {
   transition: opacity 0.5s;
 }
+
+[class*='hover\:'] {
+  transition: all 0.3s;
+}
+
+[class*='focus\:'] {
+  transition: all 0.3s;
+}
