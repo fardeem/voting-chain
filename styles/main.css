@@ -96,3 +96,21 @@
 [class*='focus\:'] {
   transition: all 0.3s;
 }
+
+.cs {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.cs::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.cs::-webkit-scrollbar {
+  height: 4px;
+  background-color: transparent;
+}
+
+.cs::-webkit-scrollbar-thumb {
+  background-color: #0000008a;
+}
