@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 
-import DataProvider from '../api/DataProvider';
+import DataContext from '../api/DataProvider';
+import BlockchainContext from '../api/blockchain';
 import { auth } from '../api/firebase';
 
 const VotingPage = ({ context }) => {
-  const { users } = useContext(DataProvider);
+  const { users } = useContext(DataContext);
   const { id, positions, nominations } = context;
 
   return (
@@ -30,15 +31,16 @@ const VotingPage = ({ context }) => {
 
 const VoteForUser = ({ options, position, electionId }) => {
   const [selectedUser, setSelectedUser] = useState('default');
+  const { castVote } = useContext(BlockchainContext);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(
-      `Vote for user ${selectedUser} to position ${position} for election ${electionId} by ${
-        auth.currentUser.uid
-      }`
-    );
+    castVote({
+      to: selectedUser,
+      electionId,
+      position
+    });
   }
 
   return (
