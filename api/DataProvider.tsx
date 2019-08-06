@@ -35,15 +35,42 @@ import React, { createContext, useState, useEffect } from 'react';
 import { db, auth } from './firebase';
 import Loading from '../components/Loading';
 
-const DataContext = createContext({
+interface Election {
+  id: string;
+  name: string;
+  status: 'NOMINATING' | 'VOTING' | 'DONE';
+  end: Date;
+  start: Date;
+  nominations: {
+    [key: string]: string[];
+  };
+  positions: {
+    [key: string]: string;
+  };
+}
+
+interface User {
+  id: string;
+  name: string;
+  publicKey: string;
+  role?: string;
+}
+
+interface Context {
+  elections: Election[];
+  users: User[];
+  currentUser: any;
+}
+
+const DataContext = createContext<Partial<Context>>({
   elections: [],
   users: [],
   currentUser: null
 });
 
 export const DataProvider = ({ children }) => {
-  const [elections, setElections] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [elections, setElections] = useState<Array<Election>>([]);
+  const [users, setUsers] = useState<Array<User>>([]);
   const [currentUser, setCurrentUser] = useState({});
   const [authLoaded, setAuthLoaded] = useState(false);
   const [usersLoaded, setUsersLoaded] = useState(false);
@@ -57,9 +84,9 @@ export const DataProvider = ({ children }) => {
     function calcStatus(start: Date, end: Date): String {
       const now = new Date();
 
-      if (now < start) return 'nominating';
-      else if (now > start && now < end) return 'voting';
-      else return 'done';
+      if (now < start) return 'NOMINATING';
+      else if (now > start && now < end) return 'VOTING';
+      else return 'DONE';
     }
 
     electionUnsubscriber = db

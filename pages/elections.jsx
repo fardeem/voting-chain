@@ -45,9 +45,9 @@ const ElectionsPage = ({ router }) => {
           {(() => {
             if (electionId && currentElection) {
               switch (currentElection.status) {
-                case 'voting':
+                case 'VOTING':
                   return <VotingPage context={currentElection} />;
-                case 'nominating':
+                case 'NOMINATING':
                   return <NominationsPage context={currentElection} />;
                 default:
                   return <h1>Results</h1>;

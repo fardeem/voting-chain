@@ -17,8 +17,8 @@ const ElectionsTitle = () => {
 
     title = name;
 
-    if (status === 'voting') subtitle = 'Vote candidates';
-    else if (status === 'nominating') subtitle = 'nominate candidates';
+    if (status === 'VOTING') subtitle = 'Vote candidates';
+    else if (status === 'NOMINATING') subtitle = 'nominate candidates';
     else subtitle = 'See results';
 
     // subtitle += ' for the election';

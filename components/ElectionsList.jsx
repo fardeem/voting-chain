@@ -6,7 +6,7 @@ import DataContext from '../api/DataProvider';
 
 const ElectionsList = () => {
   const { elections } = useContext(DataContext);
-  const electionStates = ['voting', 'nominating', 'done'];
+  const electionStates = ['VOTING', 'NOMINATING', 'DONE'];
 
   return (
     <div className="md:flex mb-4 md:-mr-8">
@@ -39,12 +39,12 @@ const List = ({ data, status }) => {
 
           <p className="italic text-xs text-gray-600">
             {(() => {
-              if (status === 'voting')
+              if (status === 'VOTING')
                 return `Voting ends in ${formatDistance(
                   new Date(end.toISOString()),
                   new Date()
                 )}`;
-              else if (status === 'nominating')
+              else if (status === 'NOMINATING')
                 return `Voting begins in ${formatDistance(
                   new Date(start.toISOString()),
                   new Date()

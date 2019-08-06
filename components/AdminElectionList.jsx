@@ -8,7 +8,7 @@ const AdminElectionList = () => {
   return (
     <div className="sm:flex flex-wrap -mr-8 mt-8">
       {elections
-        .sort((a, b) => b.start - a.start)
+        .sort((a, b) => (b.start > a.start ? 1 : -1))
         .map(election => (
           <div key={election.id} className="w-full sm:w-1/3 rounded pr-8 mb-20">
             <div
@@ -16,9 +16,9 @@ const AdminElectionList = () => {
                 'px-4 py-2 inline-block rounded uppercase font-bold text-white tracking-widest text-xs mb-4 ' +
                 (status => {
                   switch (status) {
-                    case 'voting':
+                    case 'VOTING':
                       return 'bg-blue-500';
-                    case 'done':
+                    case 'DONE':
                       return 'bg-red-500';
                     default:
                       return 'bg-yellow-500';
@@ -26,7 +26,7 @@ const AdminElectionList = () => {
                 })(election.status)
               }
             >
-              {election.status === 'done' ? 'finished' : election.status}
+              {election.status === 'DONE' ? 'finished' : election.status}
             </div>
 
             <div className="mb-4">
