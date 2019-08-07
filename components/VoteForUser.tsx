@@ -1,23 +1,23 @@
 import React, { useContext, useState, useEffect } from 'react';
-import BlockchainContext from '../api/blockchain';
-import DataContext from '../api/DataProvider';
 import { formatDistance } from 'date-fns';
+
+import BlockchainContext, { Vote } from '../api/blockchain';
+import DataContext from '../api/DataProvider';
+
+interface VotingInfo extends Vote {
+  isMined?: Boolean;
+}
 
 const VoteForUser = ({ options, position, electionId }) => {
   const [selectedUser, setSelectedUser] = useState('default');
-  const [votedFor, setVotedFor] = useState({
-    to: '',
-    isMined: false,
-    timestamp: 0
-  });
+  const [votedFor, setVotedFor] = useState<Partial<VotingInfo>>({});
   const { currentUser } = useContext(DataContext);
   const { blockchain, miningQueue, castVote } = useContext(BlockchainContext);
 
   useEffect(() => {
-    const blocks = blockchain
+    const blocks: VotingInfo[] = blockchain
       .filter(block => block.previousHash !== '0')
-      .map(block => ({ ...block.vote, isMined: true }))
-      // @ts-ignore
+      .map((block): VotingInfo => ({ ...block.vote, isMined: true }))
       .concat(miningQueue)
       .filter(
         vote =>
