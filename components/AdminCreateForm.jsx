@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../api/firebase';
 
 const AdminCreateForm = ({ show, setShow }) => {
@@ -6,6 +6,29 @@ const AdminCreateForm = ({ show, setShow }) => {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [positionsList, setPositionsList] = useState({});
+
+  useEffect(() => {
+    function closeOnEscape(e) {
+      if (e.key !== 'Escape') return;
+      setShow(false);
+    }
+
+    document.addEventListener('keyup', closeOnEscape);
+    return () => {
+      document.removeEventListener('keyup', closeOnEscape);
+    };
+  }, []);
+
+  useEffect(() => {
+    resetForm();
+  }, [show]);
+
+  function resetForm() {
+    setName('');
+    setStart('');
+    setEnd('');
+    setPositionsList('');
+  }
 
   function handleSubmit() {
     setShow(false);
@@ -22,10 +45,7 @@ const AdminCreateForm = ({ show, setShow }) => {
         }, {})
       })
       .then(() => {
-        setName('');
-        setStart('');
-        setEnd('');
-        setPositionsList('');
+        resetForm();
       })
       .catch(err => {
         console.log(err);
@@ -34,21 +54,21 @@ const AdminCreateForm = ({ show, setShow }) => {
   }
 
   return (
-    <div className="absolute flex justify-center w-full">
+    <div className="absolute left-0 flex justify-center w-full">
       <div
-        className={`w-full max-w-2xl mt-4 shadow-2xl bg-white rounded p-8 transition-opacity ${
+        className={`w-4/5 max-w-2xl mt-4 shadow-2xl bg-white rounded p-8 transition-opacity ${
           show ? 'z-10 opacity-100' : 'z-hide opacity-0'
         }`}
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex">
-          <div className="w-1/2 pr-6">
+        <div className="md:flex">
+          <div className="w-full md:w-1/2 md:pr-6">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 required
                 value={name}
@@ -61,7 +81,7 @@ const AdminCreateForm = ({ show, setShow }) => {
                 Start Date
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 type="date"
                 value={start}
                 required
@@ -76,7 +96,7 @@ const AdminCreateForm = ({ show, setShow }) => {
                 End Date
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 type="date"
                 value={end}
                 required
@@ -88,7 +108,7 @@ const AdminCreateForm = ({ show, setShow }) => {
             </div>
           </div>
 
-          <div className="w-1/2 pl-6 border-gray-300 border-l-2 border-dashed">
+          <div className="w-full md:w-1/2 md:pl-6 border-gray-300 border-dashed md:border-l-2 ">
             <PositionsList list={positionsList} updateList={setPositionsList} />
           </div>
         </div>
@@ -142,20 +162,30 @@ const PositionsList = ({ list, updateList }) => {
             className="inline-block px-2 py-1 bg-gray-300 rounded-lg mr-3 mb-3 text-sm"
           >
             {list[key]}
+            <span
+              className="ml-2 cursor-pointer text-gray-500 hover:text-black"
+              onClick={() => {
+                const newList = { ...list };
+                delete newList[key];
+                updateList(newList);
+              }}
+            >
+              &times;
+            </span>
           </li>
         ))}
       </ul>
 
       <form onSubmit={addNewPosition} className="flex flex-wrap">
         <input
-          className="shadow flex-1 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="flex-1 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           placeholder="Add Positions"
           value={newPosition}
           onChange={e => setNewPosition(e.target.value)}
         />
         <button
-          className="bg-blue-500 ml-2 shadow hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-500 ml-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           onClick={addNewPosition}
         >

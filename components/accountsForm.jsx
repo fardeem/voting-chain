@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import NProgress from 'nprogress';
 
+import ec from '../api/curve';
 import { auth, db, handleAuthError } from '../api/firebase';
 
 const AccountsForm = ({}) => {
@@ -37,12 +38,24 @@ const AccountsForm = ({}) => {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
-          return db
+          const id = res.user.uid;
+
+          const key = ec.genKeyPair();
+
+          const createUser = db
             .collection('users')
-            .doc(res.user.uid)
+            .doc(id)
             .set({
-              name: name
+              name: name,
+              publicKey: key.getPublic('hex')
             });
+
+          const setPrivateKey = db
+            .collection('privateKeys')
+            .doc(id)
+            .set({ key: key.getPrivate('hex') });
+
+          return Promise.all([createUser, setPrivateKey]);
         })
         .then(() => NProgress.done())
         .catch(error);
@@ -65,7 +78,7 @@ const AccountsForm = ({}) => {
         {isSigningUp ? 'Sign Up' : 'Login'}
       </h1>
 
-      {isSigningUp ? (
+      {isSigningUp && (
         <label className="block mb-4">
           <span className="block text-gray-700 text-sm font-bold mb-2">
             Name
@@ -78,7 +91,7 @@ const AccountsForm = ({}) => {
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </label>
-      ) : null}
+      )}
 
       <label className="block mb-4">
         <span className="block text-gray-700 text-sm font-bold mb-2">
@@ -108,9 +121,9 @@ const AccountsForm = ({}) => {
         />
       </label>
 
-      {error.length !== 0 ? (
+      {error.length !== 0 && (
         <p className="text-red-500 text-xs italic mb-2">{error}</p>
-      ) : null}
+      )}
 
       <div className="flex items-center justify-between">
         <input
@@ -128,14 +141,14 @@ const AccountsForm = ({}) => {
             {isSigningUp ? 'Login' : 'Create account'}
           </button>
 
-          {!isSigningUp ? (
+          {!isSigningUp && (
             <a
               href="/forgot-password"
               className="block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
             >
               Forgot password?
             </a>
-          ) : null}
+          )}
         </div>
       </div>
     </form>

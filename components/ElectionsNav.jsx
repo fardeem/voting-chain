@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
 
 import { auth } from '../api/firebase';
 import DataContext from '../api/DataProvider';
@@ -11,8 +10,13 @@ const ElectionsNav = () => {
     <div className="flex justify-between">
       <nav className="flex items-center">
         <Link href="/elections">
-          <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider">
+          <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider mr-4">
             All Elections
+          </a>
+        </Link>
+        <Link href="/blockchain">
+          <a className="text-gray-300 hover:text-white text-sm uppercase font-bold tracking-wider">
+            Blockchain
           </a>
         </Link>
       </nav>
@@ -20,7 +24,7 @@ const ElectionsNav = () => {
       <div className="accounts flex items-center">
         <Link href="/profile">
           <a className="mr-4 text-gray-300 hover:text-white text-sm font-bold tracking-wider">
-            {currentUser.name ? currentUser.name : null}
+            {currentUser.name}
           </a>
         </Link>
 

@@ -1,24 +1,26 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import moment from 'moment';
+import { formatDistance } from 'date-fns';
 
-import DataContext from '../api/DataProvider.jsx';
+import DataContext from '../api/DataProvider';
 
 const ElectionsList = () => {
   const { elections } = useContext(DataContext);
-  const electionStates = ['voting', 'nominating', 'done'];
+  const electionStates = ['VOTING', 'NOMINATING', 'DONE'];
 
   return (
-    <div className="flex mb-4 -mr-8">
+    <div className="md:flex mb-4 md:-mr-8">
       {electionStates.map(state => (
-        <div className="w-1/3 mr-8" key={state}>
+        <div className="w-full md:w-1/3 mr-8 mb-16" key={state}>
           <h1 className="text-sm font-bold border-purple-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
             {state === 'done' ? 'Past elections' : state}
           </h1>
 
           <List
-            data={elections.filter(e => e.status === state)}
             status={state}
+            data={elections
+              .filter(e => e.status === state)
+              .sort((a, b) => (a.end < b.end ? 1 : -1))}
           />
         </div>
       ))}
@@ -27,32 +29,44 @@ const ElectionsList = () => {
 };
 
 const List = ({ data, status }) => {
-  return data.length !== 0 ? (
+  if (data.length === 0) {
+    return (
+      <div className="empty font-extrabold text-3xl select-none text-gray-300">
+        Nothing To See Here
+      </div>
+    );
+  }
+
+  return (
     <ul>
       {data.map(({ id, name, start, end }) => (
         <li key={id} className="mb-4">
-          <Link href={`/elections?id=${id}`}>
+          <Link href="/elections/[id]" as={`/elections/${id}`}>
             <a className="text-md hover:text-purple-600">{name}</a>
           </Link>
 
-          <p className="italic text-sm font-serif text-gray-600">
+          <p className="italic text-xs text-gray-600">
             {(() => {
-              if (status === 'voting')
-                return `Voting ends ${moment(end.toISOString()).fromNow()}`;
-              else if (status === 'nominating')
-                return `Voting begins ${moment(start.toISOString()).fromNow()}`;
+              if (status === 'VOTING')
+                return `Voting ends in ${formatDistance(
+                  new Date(end.toISOString()),
+                  new Date()
+                )}`;
+              else if (status === 'NOMINATING')
+                return `Voting begins in ${formatDistance(
+                  new Date(start.toISOString()),
+                  new Date()
+                )}`;
               else
-                return `Election ended ${moment(end.toISOString()).fromNow()}`;
+                return `Election ended ${formatDistance(
+                  new Date(end.toISOString()),
+                  new Date()
+                )} ago`;
             })()}
           </p>
         </li>
       ))}
     </ul>
-  ) : (
-    <div className="empty font-extrabold text-3xl select-none text-gray-300">
-      Nothing To
-      <br /> See Here
-    </div>
   );
 };
 
