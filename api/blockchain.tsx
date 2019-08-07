@@ -27,7 +27,7 @@ interface VoteInfo {
   position: string;
 }
 
-interface Vote extends VoteInfo {
+export interface Vote extends VoteInfo {
   from: string;
   timestamp: number;
   signature: string;
