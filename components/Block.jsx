@@ -54,13 +54,22 @@ const Block = ({ block }) => {
 
   return (
     <li className="w-full max-w-md mx-auto bg-gray-800 shadow-md rounded mb-8 font-mono text-xs">
-      <p className="bg-pink-500 p-2 rounded-t cs">
+      <style jsx>{`
+        .hash {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
+      `}</style>
+
+      <p className="bg-pink-500 p-2 rounded-t hash">
         <span className="font-bold uppercase tracking-wide mr-4">
           Previous Hash
         </span>
         {block.previousHash}
       </p>
-      <p className="bg-indigo-500 p-2 cs">
+      <p className="bg-indigo-500 p-2 hash">
         <span className="font-bold uppercase tracking-wide mr-4">Hash</span>
         {block.hash}
       </p>
