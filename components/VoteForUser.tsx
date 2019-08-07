@@ -77,7 +77,7 @@ const VoteForUser = ({ options, position, electionId }) => {
       </div>
 
       <div className="w-1/4 text-right">
-        {votedFor.to === selectedUser && (
+        {votedFor.to === selectedUser && votedFor.isMined && (
           <p className="text-xs text-right italic text-gray-500">
             Voted <br />
             {formatDistance(new Date(votedFor.timestamp), new Date())} ago
@@ -86,20 +86,18 @@ const VoteForUser = ({ options, position, electionId }) => {
         <button
           className={
             'bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ' +
-            (votedFor.to === selectedUser && 'hidden')
+            (votedFor.to === selectedUser && votedFor.isMined && 'hidden')
           }
           type="submit"
         >
           {(() => {
-            if (votedFor.to === '') {
-              return 'Vote';
-            } else if (selectedUser !== votedFor.to) {
+            if (selectedUser !== votedFor.to) {
               return 'Change';
-            } else if (!votedFor.isMined && votedFor.to !== '') {
+            } else if (selectedUser === votedFor.to && !votedFor.isMined) {
               return 'Processing';
             }
 
-            return '';
+            return 'Vote';
           })()}
         </button>
       </div>
