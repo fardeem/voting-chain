@@ -3,19 +3,51 @@ import DataContext from '../api/DataProvider';
 import { format } from 'date-fns';
 
 const Block = ({ block }) => {
+  return (
+    <li className="w-full max-w-md mx-auto bg-gray-800 shadow-md rounded mb-8 font-mono text-xs">
+      <style jsx>{`
+        .hash {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
+      `}</style>
+
+      <p className="bg-pink-500 p-2 rounded-t hash">
+        <span className="font-bold uppercase tracking-wide mr-4">
+          Previous Hash
+        </span>
+        {block.previousHash}
+      </p>
+      <p className="bg-indigo-500 p-2 hash">
+        <span className="font-bold uppercase tracking-wide mr-4">Hash</span>
+        {block.hash}
+      </p>
+      <div className="text-white p-2 rounded-b">
+        <VoteContent vote={block.vote} />
+      </div>
+    </li>
+  );
+};
+
+const VoteContent = ({ vote }) => {
   const { users, elections } = useContext(DataContext);
-  let VoteContent;
 
-  if (block.vote !== null) {
-    const voteFormatted = {
-      to: users.find(user => user.id === block.vote.to).name,
-      from: users.find(user => user.id === block.vote.from).name,
-      election: elections.find(
-        election => election.id === block.vote.electionId
-      ).name
-    };
+  if (vote === null)
+    return <p className="font-bold uppercase tracking-widest">Genesis block</p>;
 
-    VoteContent = (
+  const voteFormatted = {
+    to: users.find(user => user.id === vote.to).name,
+    from: users.find(user => user.id === vote.from).name,
+    election: elections.find(election => election.id === vote.electionId).name,
+  };
+
+  console.log(voteFormatted);
+
+  return (
+    <>
+      <span className="font-bold uppercase tracking-wide mr-4">Vote</span>
       <table className="table">
         <style jsx>{`
           .table {
@@ -42,48 +74,14 @@ const Block = ({ block }) => {
             </td>
             <td>
               {format(
-                new Date(block.vote.timestamp),
-                'MMMM do, yyyy h:mm bbbb' // Ex: August 9th, 2001 7:00 a.m.
+                new Date(vote.timestamp),
+                'MMMM do, yyyy h:mm:ss bbbb' // Ex: August 9th, 2001 7:00 a.m.
               )}
             </td>
           </tr>
         </tbody>
       </table>
-    );
-  }
-
-  return (
-    <li className="w-full max-w-md mx-auto bg-gray-800 shadow-md rounded mb-8 font-mono text-xs">
-      <style jsx>{`
-        .hash {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          max-width: 100%;
-        }
-      `}</style>
-
-      <p className="bg-pink-500 p-2 rounded-t hash">
-        <span className="font-bold uppercase tracking-wide mr-4">
-          Previous Hash
-        </span>
-        {block.previousHash}
-      </p>
-      <p className="bg-indigo-500 p-2 hash">
-        <span className="font-bold uppercase tracking-wide mr-4">Hash</span>
-        {block.hash}
-      </p>
-      <div className="text-white p-2 rounded-b">
-        {block.vote === null ? (
-          <p className="font-bold uppercase tracking-widest">Genesis block</p>
-        ) : (
-          <>
-            <span className="font-bold uppercase tracking-wide mr-4">Vote</span>
-            {VoteContent}
-          </>
-        )}
-      </div>
-    </li>
+    </>
   );
 };
 
