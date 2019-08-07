@@ -41,6 +41,8 @@ const VoteContent = ({ vote }) => {
     to: users.find(user => user.id === vote.to).name,
     from: users.find(user => user.id === vote.from).name,
     election: elections.find(election => election.id === vote.electionId).name,
+    position: elections.find(election => election.id === vote.electionId)
+      .positions[vote.position]
   };
 
   console.log(voteFormatted);
@@ -63,6 +65,10 @@ const VoteContent = ({ vote }) => {
           <tr>
             <td className="font-bold uppercase tracking-wide mr-2">From</td>
             <td>{voteFormatted.from}</td>
+          </tr>
+          <tr>
+            <td className="font-bold uppercase tracking-wide mr-2">Position</td>
+            <td>{voteFormatted.position}</td>
           </tr>
           <tr>
             <td className="font-bold uppercase tracking-wide mr-2">Election</td>
