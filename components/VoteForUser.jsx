@@ -1,13 +1,44 @@
 import React, { useContext, useState, useEffect } from 'react';
 import BlockchainContext from '../api/blockchain';
 import DataContext from '../api/DataProvider';
+import { formatDistance } from 'date-fns';
 
 const VoteForUser = ({ options, position, electionId }) => {
   const [selectedUser, setSelectedUser] = useState('default');
-  const { castVote } = useContext(BlockchainContext);
+  const [votedFor, setVotedFor] = useState({
+    to: '',
+    isMined: false,
+    timestamp: 0
+  });
+  const { currentUser } = useContext(DataContext);
+  const { blockchain, miningQueue, castVote } = useContext(BlockchainContext);
+
+  useEffect(() => {
+    const blocks = blockchain
+      .filter(block => block.previousHash !== '0')
+      .map(block => ({ ...block.vote, isMined: true }))
+      // @ts-ignore
+      .concat(miningQueue)
+      .filter(
+        vote =>
+          vote.from === currentUser.id &&
+          vote.electionId === electionId &&
+          vote.position === position
+      )
+      .sort((a, b) => {
+        return b.timestamp - a.timestamp;
+      });
+
+    if (blocks.length > 0) {
+      setVotedFor(blocks[0]);
+      setSelectedUser(blocks[0].to);
+    }
+  }, [blockchain, miningQueue]);
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (selectedUser === votedFor.to) return;
 
     castVote({
       to: selectedUser,
@@ -46,11 +77,30 @@ const VoteForUser = ({ options, position, electionId }) => {
       </div>
 
       <div className="w-1/4 text-right">
+        {votedFor.to === selectedUser && (
+          <p className="text-xs text-right italic text-gray-500">
+            Voted <br />
+            {formatDistance(new Date(votedFor.timestamp), new Date())} ago
+          </p>
+        )}
         <button
-          className="text-r bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          className={
+            'bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ' +
+            (votedFor.to === selectedUser && 'hidden')
+          }
           type="submit"
         >
-          Vote
+          {(() => {
+            if (votedFor.to === '') {
+              return 'Vote';
+            } else if (selectedUser !== votedFor.to) {
+              return 'Change';
+            } else if (!votedFor.isMined && votedFor.to !== '') {
+              return 'Processing';
+            }
+
+            return '';
+          })()}
         </button>
       </div>
     </form>
