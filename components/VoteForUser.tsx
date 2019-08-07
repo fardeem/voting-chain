@@ -6,11 +6,14 @@ import DataContext from '../api/DataProvider';
 
 interface VotingInfo extends Vote {
   isMined?: Boolean;
+  loaded?: Boolean;
 }
 
 const VoteForUser = ({ options, position, electionId }) => {
   const [selectedUser, setSelectedUser] = useState('default');
-  const [votedFor, setVotedFor] = useState<Partial<VotingInfo>>({});
+  const [votedFor, setVotedFor] = useState<Partial<VotingInfo>>({
+    loaded: false
+  });
   const { currentUser } = useContext(DataContext);
   const { blockchain, miningQueue, castVote } = useContext(BlockchainContext);
 
@@ -32,6 +35,8 @@ const VoteForUser = ({ options, position, electionId }) => {
     if (blocks.length > 0) {
       setVotedFor(blocks[0]);
       setSelectedUser(blocks[0].to);
+    } else {
+      setVotedFor({});
     }
   }, [blockchain, miningQueue]);
 
@@ -49,7 +54,7 @@ const VoteForUser = ({ options, position, electionId }) => {
 
   return (
     <form className="w-3/4 flex items-center" onSubmit={handleSubmit}>
-      <div className=" w-3/4 relative">
+      <div className=" w-3/4 relative mr-3">
         <select
           value={selectedUser}
           onChange={e => setSelectedUser(e.target.value)}
@@ -76,7 +81,11 @@ const VoteForUser = ({ options, position, electionId }) => {
         </div>
       </div>
 
-      <div className="w-1/4 text-right">
+      <div
+        className={
+          'w-1/4 text-right ' + (votedFor.loaded === false ? 'opacity-0' : null)
+        }
+      >
         {votedFor.to === selectedUser && votedFor.isMined && (
           <p className="text-xs text-right italic text-gray-500">
             Voted <br />
