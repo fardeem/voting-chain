@@ -11,32 +11,25 @@ interface VotingInfo extends Vote {
 
 const VoteForUser = ({ options, position, electionId }) => {
   const [selectedUser, setSelectedUser] = useState('default');
-  const [votedFor, setVotedFor] = useState<Partial<VotingInfo>>({
-    loaded: false
-  });
+  const [votedFor, setVotedFor] = useState<Partial<VotingInfo>>({});
   const { currentUser } = useContext(DataContext);
   const { blockchain, miningQueue, castVote } = useContext(BlockchainContext);
 
   useEffect(() => {
-    const blocks: VotingInfo[] = blockchain
+    const vote: VotingInfo = blockchain
       .filter(block => block.previousHash !== '0')
       .map((block): VotingInfo => ({ ...block.vote, isMined: true }))
       .concat(miningQueue)
-      .filter(
+      .find(
         vote =>
           vote.from === currentUser.id &&
           vote.electionId === electionId &&
           vote.position === position
-      )
-      .sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
+      );
 
-    if (blocks.length > 0) {
-      setVotedFor(blocks[0]);
-      setSelectedUser(blocks[0].to);
-    } else {
-      setVotedFor({});
+    if (vote) {
+      setVotedFor(vote);
+      setSelectedUser(vote.to);
     }
   }, [blockchain, miningQueue]);
 
@@ -57,6 +50,7 @@ const VoteForUser = ({ options, position, electionId }) => {
       <div className=" w-3/4 relative mr-3">
         <select
           value={selectedUser}
+          disabled={!!votedFor.to}
           onChange={e => setSelectedUser(e.target.value)}
           className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
         >
@@ -81,12 +75,8 @@ const VoteForUser = ({ options, position, electionId }) => {
         </div>
       </div>
 
-      <div
-        className={
-          'w-1/4 text-right ' + (votedFor.loaded === false ? 'opacity-0' : null)
-        }
-      >
-        {votedFor.to === selectedUser && votedFor.isMined && (
+      <div className="w-1/4 text-right">
+        {votedFor.to && votedFor.isMined && (
           <p className="text-xs text-right italic text-gray-500">
             Voted <br />
             {formatDistance(new Date(votedFor.timestamp), new Date())} ago
@@ -95,14 +85,12 @@ const VoteForUser = ({ options, position, electionId }) => {
         <button
           className={
             'bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ' +
-            (votedFor.to === selectedUser && votedFor.isMined && 'hidden')
+            (votedFor.to && votedFor.isMined && 'hidden')
           }
           type="submit"
         >
           {(() => {
-            if (selectedUser !== votedFor.to) {
-              return 'Change';
-            } else if (selectedUser === votedFor.to && !votedFor.isMined) {
+            if (selectedUser === votedFor.to && !votedFor.isMined) {
               return 'Processing';
             }
 
