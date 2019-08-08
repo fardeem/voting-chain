@@ -65,7 +65,7 @@ export default BlockchainContext;
 //====================
 
 export const BlockchainProvider = ({ children }) => {
-  const { currentUser, users } = useContext(DataContext);
+  const { currentUser, users, elections } = useContext(DataContext);
 
   const [miningQueue, setMiningQueue] = useState<Array<Vote>>([]);
   const [isMining, setIsMining] = useState(false);
@@ -106,6 +106,30 @@ export const BlockchainProvider = ({ children }) => {
 
     const miner = new Miner();
     const transaction = miningQueue[0];
+
+    const previousVote = blockchain.find(
+      ({ vote }: { vote: Vote }) =>
+        vote !== null &&
+        vote.from === transaction.from &&
+        vote.electionId === transaction.electionId &&
+        vote.position === transaction.position
+    );
+
+    const electionBeingVoteTo = elections.find(
+      election => election.id === transaction.electionId
+    );
+
+    // Do not let users change their vote,
+    // vote for themselves,
+    // vote to closed elections
+    if (
+      previousVote ||
+      transaction.to === transaction.from ||
+      electionBeingVoteTo.end < new Date()
+    ) {
+      setMiningQueue(miningQueue.splice(1, miningQueue.length));
+      return;
+    }
 
     miner.postMessage({
       vote: transaction,

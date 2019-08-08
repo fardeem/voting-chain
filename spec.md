@@ -57,10 +57,10 @@ Module:
 
   - [x] Verify 1 or more scheme for voting can run at the same time.
   - [x] For a single scheme, Verify user can vote only 1 candidate at a time.
-  - [ ] Verify user can not modify already casted vote.
+  - [x] Verify user can not modify already casted vote.
   - [x] Verify user can cast vote simultaneously to various scheme.
-  - [ ] Verify user can not cast vote for him/herself.
-  - [ ] Verify can not cast vote to already closed scheme.
+  - [x] Verify user can not cast vote for him/herself.
+  - [x] Verify can not cast vote to already closed scheme.
   - [ ] Verify user can see already casted vote count for any specific candidate of any scheme/category.
 
 - Super admin:
