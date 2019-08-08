@@ -69,7 +69,7 @@ Module:
   - [x] Can not edit already closed scheme.
   - [x] Can not delete already closed scheme.
   - [x] Can not change start date of an already started scheme.
-  - [ ] Can not create 2 or more scheme with same name.
+  - [x] Can not create 2 or more scheme with same name.
   - [x] Can not have 2 or more category having same name in a single scheme.
   - [ ] Verify super admin can take decision of selecting candidate for a scheme which is hold.
   - [ ] Verify super admin can not take decision of selecting candidate for a scheme which is not hold.

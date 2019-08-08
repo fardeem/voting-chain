@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { db } from '../api/firebase';
+import DataContext from '../api/DataProvider';
 
 const AdminCreateForm = ({ show, setShow }) => {
   const [name, setName] = useState('');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [positionsList, setPositionsList] = useState({});
+  const { elections } = useContext(DataContext);
 
   useEffect(() => {
     function closeOnEscape(e) {
@@ -31,6 +33,15 @@ const AdminCreateForm = ({ show, setShow }) => {
   }
 
   function handleSubmit() {
+    if (
+      elections.find(
+        election => election.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      alert('Election with this name already exists.');
+      return;
+    }
+
     setShow(false);
 
     db.collection('elections')
