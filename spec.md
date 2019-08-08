@@ -61,7 +61,7 @@ Module:
   - [x] Verify user can cast vote simultaneously to various scheme.
   - [x] Verify user can not cast vote for him/herself.
   - [x] Verify can not cast vote to already closed scheme.
-  - [ ] Verify user can see already casted vote count for any specific candidate of any scheme/category.
+  - [x] Verify user can see already casted vote count for any specific candidate of any scheme/category.
 
 - Super admin:
 

@@ -58,15 +58,25 @@ const VoteForUser = ({ options, position, electionId }) => {
             Select your option
           </option>
 
-          {options.map(user => (
-            <option
-              value={user.id}
-              key={user.id}
-              disabled={currentUser.id === user.id}
-            >
-              {user.name}
-            </option>
-          ))}
+          {options.map(user => {
+            const voteCount = blockchain.filter(
+              ({ vote }) =>
+                vote !== null &&
+                vote.electionId === electionId &&
+                vote.position === position &&
+                vote.to === user.id
+            ).length;
+
+            return (
+              <option
+                value={user.id}
+                key={user.id}
+                disabled={currentUser.id === user.id}
+              >
+                {user.name} – {voteCount} vote{voteCount > 1 ? 's' : null}
+              </option>
+            );
+          })}
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
           <svg
