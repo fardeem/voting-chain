@@ -59,7 +59,11 @@ const VoteForUser = ({ options, position, electionId }) => {
           </option>
 
           {options.map(user => (
-            <option value={user.id} key={user.id}>
+            <option
+              value={user.id}
+              key={user.id}
+              disabled={currentUser.id === user.id}
+            >
               {user.name}
             </option>
           ))}
