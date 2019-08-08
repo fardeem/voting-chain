@@ -74,9 +74,7 @@ export const BlockchainProvider = ({ children }) => {
   const chainPreviousHashRef = useRef(genesisBlock.hash);
 
   useEffect(function() {
-    fetch('http://localhost:8500/blockchain')
-      .then(res => res.json())
-      .then(data => dispatch({ type: 'UPDATE', value: data }));
+    fetch('http://localhost:8500/blockchain');
   }, []);
 
   /**
@@ -130,8 +128,8 @@ export const BlockchainProvider = ({ children }) => {
    * Add them to the chain
    */
   useEffect(() => {
-    socket.on('BLOCK', (block: Block) => {
-      dispatch({ type: 'UPDATE', value: [block] });
+    socket.on('BLOCK', (blocks: Block[]) => {
+      dispatch({ type: 'UPDATE', value: blocks });
     });
 
     return () => {

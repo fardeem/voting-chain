@@ -41,7 +41,7 @@ app.post('/new-block', function(req, res) {
 
   db.put(block.hash, block);
 
-  io.emit('BLOCK', block);
+  io.emit('BLOCK', [block]);
   res.send('Received');
 });
 
@@ -58,8 +58,8 @@ app.get('/blockchain', function(req, res) {
     })
     .on('close', function() {
       console.log('Stream closed');
+      io.emit('BLOCK', values);
       res.json(values);
-      // console.log(values);
     })
     .on('end', function() {
       console.log('Stream ended');
