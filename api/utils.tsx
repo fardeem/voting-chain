@@ -59,7 +59,7 @@ export const genesisBlock: Block = {
   vote: null
 };
 
-export function getLongestChain(blockchain: Block[]) {
+export function getLongestChain(blockchain: Block[]): Block[] {
   const found = [];
 
   function buildLink(parent: Block, history = []) {
@@ -77,6 +77,25 @@ export function getLongestChain(blockchain: Block[]) {
   buildLink(blockchain.find(block => block.previousHash === '0'));
 
   return found.sort((a, b) => b.length - a.length)[0];
+}
+
+export function sortBlockchain(chain: Block[]) {
+  const itemsByPrev = chain.reduce((a, item) => {
+    a[item.previousHash] = item;
+    return a;
+  }, {});
+
+  const sorted = [];
+  const { length } = chain;
+  let lastId = 0;
+
+  while (sorted.length < length) {
+    const obj = itemsByPrev[lastId];
+    sorted.push(obj);
+    lastId = obj.hash;
+  }
+
+  return sorted;
 }
 
 type BlockchainActions = { type: 'UPDATE'; value: Block[] };

@@ -18,6 +18,7 @@ import {
   genesisBlock,
   hashVote,
   getLongestChain,
+  sortBlockchain,
   broadcastToNetwork,
   castVote
 } from './utils';
@@ -172,7 +173,7 @@ export const BlockchainProvider = ({ children }) => {
   return (
     <BlockchainContext.Provider
       value={{
-        blockchain,
+        blockchain: sortBlockchain(getLongestChain(blockchain)),
         miningQueue,
         castVote: (vote: VoteInfo) => {
           return castVote(vote, currentUser.privateKey);
