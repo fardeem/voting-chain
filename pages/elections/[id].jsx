@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import ElectionsLayout from '../../layouts/ElectionsLayout';
 import VotingPage from '../../components/VotingPage';
 import NominationsPage from '../../components/NominationsPage';
+import ResultsPage from '../../components/ResultsPage';
 
 const Page = () => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Page = () => {
           case 'NOMINATING':
             return <NominationsPage />;
           default:
-            return <h1>Results</h1>;
+            return <ResultsPage />;
         }
       })()}
     </ElectionsLayout>
