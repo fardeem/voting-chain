@@ -77,3 +77,10 @@ Module:
 - Edge case:
 - [ ] If 1 user have same 5 vote count for 1 category and 8 vote for 2 category then he/she will be elected for category 2.
 - [ ] If 1 user have same 5 vote count for 1 category and 5 vote for 2 category then the winner selection will be Hold and depends on the decesion of super admin( Business decision)
+
+## Voting Specs
+
+- Highest voted user in category wins
+- If 1 user have same 5 vote count for 1 category and 8 vote for 2 category then he/she will be elected for category 2.
+- If 1 user have same 5 vote count for 1 category and 5 vote for 2 category then the winner selection will be Hold and depends on the decesion of super admin( Business decision)
+- If two or more users in a same category has the same votes, then goes on hold
