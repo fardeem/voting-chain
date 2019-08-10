@@ -1,6 +1,3 @@
-const munkres = require('munkres-js');
-const make_cost_matrix = require('munkres-js').make_cost_matrix;
-
 const positions = ['pos1', 'pos2', 'pos3', 'pos4', 'pos5', 'pos6'];
 const users = ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'];
 
@@ -124,6 +121,23 @@ positions.forEach((position, i) => {
 });
 
 console.log(results);
+
+const positionsOnHold = Object.values(results)
+  .filter(({ positions }, inde, arr) => {
+    if (positions.length > 1) return true;
+    if (
+      arr
+        .filter((_, i) => inde !== i)
+        .find(val => val.positions.includes(positions[0]))
+    )
+      return true;
+  })
+  .map(val => val.positions)
+  .flat();
+
+const positionsHolded = new Set(positionsOnHold);
+
+console.log(positionsHolded);
 
 // const results = {
 //   pos1: 'u1',
