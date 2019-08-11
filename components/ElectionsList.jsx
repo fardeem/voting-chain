@@ -6,7 +6,7 @@ import DataContext from '../api/DataProvider';
 
 const ElectionsList = () => {
   const { elections } = useContext(DataContext);
-  const electionStates = ['VOTING', 'NOMINATING', 'DONE'];
+  const electionStates = ['DONE', 'VOTING', 'NOMINATING'];
 
   return (
     <div className="md:flex mb-4 md:-mr-8">
