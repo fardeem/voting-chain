@@ -22,7 +22,8 @@ const Page = () => {
   const router = useRouter();
   const { id } = router.query;
   const { elections } = useContext(DataContext);
-  const { status } = elections.find(election => election.id === id);
+  const { status } =
+    elections.length > 0 && elections.find(election => election.id === id);
 
   return (
     <ElectionsLayout>

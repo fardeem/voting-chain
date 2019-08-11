@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import Router from 'next/router';
+
+import DataContext from '../api/DataProvider';
 import ElectionsNav from '../components/ElectionsNav';
 import ElectionsTitle from '../components/ElectionsTitle';
+import Loading from '../components/Loading';
 
 const ElectionsLayout = ({ children }) => {
+  const { currentUser } = useContext(DataContext);
+
+  if (!currentUser) {
+    Router.push('/');
+    return null;
+  }
+
+  if (currentUser.role === 'admin') {
+    Router.push('/admin');
+    return <Loading />;
+  }
+
   return (
     <main className="min-h-screen">
       <header className="bg-pattern">
