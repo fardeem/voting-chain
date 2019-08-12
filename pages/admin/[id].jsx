@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import DataContext from '../../api/DataProvider';
@@ -13,6 +13,11 @@ const Page = () => {
   const { name } = elections.find(election => election.id === id);
 
   const [results, positionsOnHold] = useElectionResult(id);
+
+  if (status === 'NOMINATING' || status === 'VOTING') {
+    Router.push('/admin');
+    return;
+  }
 
   return (
     <AdminLayout
