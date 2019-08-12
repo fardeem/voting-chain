@@ -108,6 +108,7 @@ export const BlockchainProvider = ({ children }) => {
     const miner = new Miner();
     const transaction = miningQueue[0];
 
+    // Check if the user has voted for this election and position before
     const previousVote = blockchain.find(
       ({ vote }: { vote: Vote }) =>
         vote !== null &&
