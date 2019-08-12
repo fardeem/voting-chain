@@ -13,7 +13,9 @@ const ElectionsList = () => {
       {electionStates.map(state => (
         <div className="w-full md:w-1/3 mr-8" key={state}>
           <h1 className="text-sm font-bold border-purple-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
-            {state === 'done' ? 'Past elections' : state}
+            {state === 'DONE' && 'Past elections 📖'}
+            {state === 'VOTING' && 'VOTING 🗳'}
+            {state === 'NOMINATING' && 'NOMINATING 🎯'}
           </h1>
 
           <List
