@@ -35,7 +35,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { db, auth } from './firebase';
 import Loading from '../components/Loading';
 
-interface Election {
+export interface Election {
   id: string;
   name: string;
   status: 'NOMINATING' | 'VOTING' | 'DONE';
