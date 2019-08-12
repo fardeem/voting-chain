@@ -6,7 +6,6 @@ import React, {
   createContext,
   useReducer
 } from 'react';
-import shajs from 'sha.js';
 import io from 'socket.io-client';
 
 // @ts-ignore

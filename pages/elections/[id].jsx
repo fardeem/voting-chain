@@ -1,15 +1,4 @@
-// import { useRouter } from 'next/router';
-
-// const Post = () => {
-//   const router = useRouter();
-//   const { id } = router.query;
-
-//   return <p>Post: {id}</p>;
-// };
-
-// export default Post;
-
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import DataContext from '../../api/DataProvider';
 import { useRouter } from 'next/router';
