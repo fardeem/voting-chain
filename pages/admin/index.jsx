@@ -1,21 +1,12 @@
-import React, { useState, useContext } from 'react';
-import Router from 'next/router';
+import React, { useState } from 'react';
 
 import { auth } from '../../api/firebase';
-import DataContext from '../../api/DataProvider';
-import Loading from '../../components/Loading';
 import AdminLayout from '../../layouts/AdminLayout';
 import AdminElectionList from '../../components/AdminElectionList';
 import AdminCreateForm from '../../components/AdminCreateForm';
 
 const AdminPage = () => {
-  const { currentUser } = useContext(DataContext);
   const [isCreating, setIsCreating] = useState(false);
-
-  if (!currentUser || currentUser.role !== 'admin') {
-    Router.push('/');
-    return <Loading />;
-  }
 
   const MenuItems = () => (
     <div>
