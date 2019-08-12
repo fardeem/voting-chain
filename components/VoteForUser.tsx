@@ -67,7 +67,6 @@ const VoteForUser = ({ options, position, electionId }: Props) => {
           {options.map(user => {
             const voteCount = blockchain.filter(
               ({ vote }) =>
-                vote !== null &&
                 vote.electionId === electionId &&
                 vote.position === position &&
                 vote.to === user.id

@@ -25,7 +25,11 @@ const Block = ({ block }) => {
         {block.hash}
       </p>
       <div className="text-white p-2 rounded-b">
-        <VoteContent vote={block.vote} />
+        {block.previousHash === '0' ? (
+          <p className="font-bold uppercase tracking-widest">Genesis block</p>
+        ) : (
+          <VoteContent vote={block.vote} />
+        )}
       </div>
     </li>
   );
@@ -33,9 +37,6 @@ const Block = ({ block }) => {
 
 const VoteContent = ({ vote }) => {
   const { users, elections } = useContext(DataContext);
-
-  if (vote === null)
-    return <p className="font-bold uppercase tracking-widest">Genesis block</p>;
 
   const voteFormatted = {
     to: users.find(user => user.id === vote.to).name,

@@ -110,7 +110,6 @@ export const BlockchainProvider = ({ children }) => {
     // Check if the user has voted for this election and position before
     const previousVote = blockchain.find(
       ({ vote }: { vote: Vote }) =>
-        vote !== null &&
         vote.from === transaction.from &&
         vote.electionId === transaction.electionId &&
         vote.position === transaction.position

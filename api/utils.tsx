@@ -56,7 +56,8 @@ export const genesisBlock: Block = {
   hash: '0008a5469e5cb0d2c2844a18efaf8fc723e100b08c34485b784e04fce79166f9',
   previousHash: '0',
   nonce: 194,
-  vote: null
+  // @ts-ignore
+  vote: {}
 };
 
 export function getLongestChain(blockchain: Block[]): Block[] {

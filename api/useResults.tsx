@@ -9,9 +9,7 @@ export function useElectionResult(electionId: string) {
   const { nominations } = elections.find(({ id }) => id === electionId);
 
   const votesForElection = blockchain
-    .filter(
-      block => block.vote !== null && block.vote.electionId === electionId
-    )
+    .filter(block => block.vote.electionId === electionId)
     .map(({ vote }) => vote);
 
   const positions = Object.keys(nominations);
