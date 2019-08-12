@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import Router from 'next/router';
 import Head from 'next/head';
 
-import AdminElectionList from '../components/AdminElectionList';
-import AdminCreateForm from '../components/AdminCreateForm';
-import DataContext from '../api/DataProvider';
-import { auth } from '../api/firebase';
-import Loading from '../components/Loading';
+import AdminElectionList from '../../components/AdminElectionList';
+import AdminCreateForm from '../../components/AdminCreateForm';
+import DataContext from '../../api/DataProvider';
+import { auth } from '../../api/firebase';
+import Loading from '../../components/Loading';
 
 const AdminPage = () => {
   const { currentUser } = useContext(DataContext);
