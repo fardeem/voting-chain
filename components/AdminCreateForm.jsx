@@ -65,7 +65,11 @@ const AdminCreateForm = ({ show, setShow }) => {
   }
 
   return (
-    <div className="absolute left-0 flex justify-center w-full">
+    <div
+      className={`absolute left-0 flex justify-center w-full ${
+        show ? 'z-10' : 'z-hide'
+      }`}
+    >
       <div
         className={`w-4/5 max-w-2xl mt-4 shadow-2xl bg-white rounded p-8 transition-opacity ${
           show ? 'z-10 opacity-100' : 'z-hide opacity-0'

@@ -14,7 +14,7 @@ import React, { useState } from 'react';
 import NProgress from 'nprogress';
 import Head from 'next/head';
 
-import AccountsPage from '../layouts/accountsPage';
+import AccountsLayout from '../layouts/accountsLayout';
 import { auth, handleAuthError } from '../api/firebase';
 
 const ForgotPassword = () => {
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <AccountsPage>
+    <AccountsLayout>
       <Head>
         <title>Forgot Password</title>
       </Head>
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
           </a>
         </div>
       </form>
-    </AccountsPage>
+    </AccountsLayout>
   );
 };
 

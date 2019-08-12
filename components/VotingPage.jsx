@@ -4,22 +4,18 @@ import { useRouter } from 'next/router';
 import DataContext from '../api/DataProvider';
 import VoteForUser from './VoteForUser';
 
-const VotingPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const { users, elections } = useContext(DataContext);
-  const { positions, nominations } = elections.find(
-    election => election.id === id
-  );
+const VotingPage = ({ context }) => {
+  const { users } = useContext(DataContext);
+  const { id, positions, nominations } = context;
 
   return (
     <div className="">
       {Object.keys(positions).map((key, index) => (
         <div key={index} className="flex items-center mb-20">
-          <div className="w-1/4">
-            <p className="block text-gray-500 font-bold mb-1 md:mb-0 pr-4">
+          <div className="w-1/3">
+            <h1 className="text-sm font-bold uppercase tracking-wide">
               {positions[key]}
-            </p>
+            </h1>
           </div>
 
           <VoteForUser

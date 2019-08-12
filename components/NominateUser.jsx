@@ -16,7 +16,7 @@ const NominateUser = ({ options, position, electionId }) => {
         )
       })
       .then(() => {
-        setSelectedUser('');
+        setSelectedUser('default');
       });
 
     console.log(

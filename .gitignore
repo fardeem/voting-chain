@@ -19,3 +19,4 @@ yarn-debug.log*
 yarn-error.log*
 api/config.js
 *.db
+users.md

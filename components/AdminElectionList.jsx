@@ -1,16 +1,18 @@
 import React, { useContext } from 'react';
 import { format } from 'date-fns';
+import Link from 'next/link';
 
 import DataProvider from '../api/DataProvider';
+import { useElectionResult } from '../api/useResults';
 
 const AdminElectionList = () => {
   const { elections } = useContext(DataProvider);
   return (
     <div className="sm:flex flex-wrap -mr-8 mt-8">
       {elections
-        .sort((a, b) => (b.start > a.start ? 1 : -1))
+        .sort((a, b) => (a.status > b.status ? 1 : -1))
         .map(election => (
-          <div key={election.id} className="w-full sm:w-1/3 rounded pr-8 mb-20">
+          <div key={election.id} className="w-full sm:w-1/3 rounded pr-8 mb-10">
             <div
               className={
                 'px-4 py-2 inline-block rounded uppercase font-bold text-white tracking-widest text-xs mb-4 ' +
@@ -66,6 +68,17 @@ const AdminElectionList = () => {
                 ))}
               </ul>
             </div>
+
+            {election.status === 'DONE' &&
+              useElectionResult(election.id)[1].length > 0 && (
+                <div className="mb-4">
+                  <Link href="/admin/[id]" as={`/admin/${election.id}`}>
+                    <a className="text-sm tracking-wider uppercase text-red-500 underline">
+                      Requires attention
+                    </a>
+                  </Link>
+                </div>
+              )}
           </div>
         ))}
     </div>

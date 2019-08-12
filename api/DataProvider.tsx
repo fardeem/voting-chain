@@ -35,7 +35,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { db, auth } from './firebase';
 import Loading from '../components/Loading';
 
-interface Election {
+export interface Election {
   id: string;
   name: string;
   status: 'NOMINATING' | 'VOTING' | 'DONE';
@@ -49,7 +49,7 @@ interface Election {
   };
 }
 
-interface User {
+export interface User {
   id: string;
   name: string;
   publicKey: string;
@@ -75,7 +75,7 @@ const DataContext = createContext<Partial<Context>>({
 export const DataProvider = ({ children }) => {
   const [elections, setElections] = useState<Array<Election>>([]);
   const [users, setUsers] = useState<Array<User>>([]);
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState<Partial<CurrentUser>>({});
   const [authLoaded, setAuthLoaded] = useState(false);
   const [usersLoaded, setUsersLoaded] = useState(false);
   const [electionsLoaded, setElectionsLoaded] = useState(false);

@@ -2,14 +2,20 @@ import React, { useContext, useState, useEffect } from 'react';
 import { formatDistance } from 'date-fns';
 
 import BlockchainContext, { Vote } from '../api/blockchain';
-import DataContext from '../api/DataProvider';
+import DataContext, { User } from '../api/DataProvider';
 
 interface VotingInfo extends Vote {
   isMined?: Boolean;
   loaded?: Boolean;
 }
 
-const VoteForUser = ({ options, position, electionId }) => {
+interface Props {
+  options: User[];
+  position: string;
+  electionId: string;
+}
+
+const VoteForUser = ({ options, position, electionId }: Props) => {
   const [selectedUser, setSelectedUser] = useState('default');
   const [votedFor, setVotedFor] = useState<Partial<VotingInfo>>({});
   const { currentUser } = useContext(DataContext);
@@ -30,6 +36,8 @@ const VoteForUser = ({ options, position, electionId }) => {
     if (vote) {
       setVotedFor(vote);
       setSelectedUser(vote.to);
+    } else {
+      setVotedFor({});
     }
   }, [blockchain, miningQueue]);
 
@@ -46,7 +54,7 @@ const VoteForUser = ({ options, position, electionId }) => {
   }
 
   return (
-    <form className="w-3/4 flex items-center" onSubmit={handleSubmit}>
+    <form className="w-2/3 flex items-center" onSubmit={handleSubmit}>
       <div className=" w-3/4 relative mr-3">
         <select
           value={selectedUser}
@@ -61,7 +69,6 @@ const VoteForUser = ({ options, position, electionId }) => {
           {options.map(user => {
             const voteCount = blockchain.filter(
               ({ vote }) =>
-                vote !== null &&
                 vote.electionId === electionId &&
                 vote.position === position &&
                 vote.to === user.id
@@ -90,7 +97,7 @@ const VoteForUser = ({ options, position, electionId }) => {
       </div>
 
       <div className="w-1/4 text-right">
-        {votedFor.to && votedFor.isMined && (
+        {votedFor.isMined && (
           <p className="text-xs text-right italic text-gray-500">
             Voted <br />
             {formatDistance(new Date(votedFor.timestamp), new Date())} ago
@@ -99,7 +106,7 @@ const VoteForUser = ({ options, position, electionId }) => {
         <button
           className={
             'bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ' +
-            (votedFor.to && votedFor.isMined && 'hidden')
+            (votedFor.isMined && 'hidden')
           }
           type="submit"
         >

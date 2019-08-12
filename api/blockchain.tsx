@@ -6,7 +6,6 @@ import React, {
   createContext,
   useReducer
 } from 'react';
-import shajs from 'sha.js';
 import io from 'socket.io-client';
 
 // @ts-ignore
@@ -108,13 +107,17 @@ export const BlockchainProvider = ({ children }) => {
     const miner = new Miner();
     const transaction = miningQueue[0];
 
+    // Check if the user has voted for this election and position before
     const previousVote = blockchain.find(
       ({ vote }: { vote: Vote }) =>
-        vote !== null &&
         vote.from === transaction.from &&
         vote.electionId === transaction.electionId &&
         vote.position === transaction.position
     );
+
+    const { role } = users.find(({ id }) => id === transaction.from) || {
+      role: 'user'
+    };
 
     const electionBeingVoteTo = elections.find(
       election => election.id === transaction.electionId
@@ -122,11 +125,13 @@ export const BlockchainProvider = ({ children }) => {
 
     // Do not let users change their vote,
     // vote for themselves,
-    // vote to closed elections
+    // vote to closed elections, if not the admin
+    // vote to open elections, if the admin -- For elections on hold
     if (
       previousVote ||
       transaction.to === transaction.from ||
-      electionBeingVoteTo.end < new Date()
+      (electionBeingVoteTo.end < new Date() && role !== 'admin') ||
+      (electionBeingVoteTo.end > new Date() && role === 'admin')
     ) {
       setMiningQueue(miningQueue.splice(1, miningQueue.length));
       return;
