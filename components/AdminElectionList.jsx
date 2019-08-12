@@ -10,9 +10,9 @@ const AdminElectionList = () => {
   return (
     <div className="sm:flex flex-wrap -mr-8 mt-8">
       {elections
-        .sort((a, b) => (b.start > a.start ? 1 : -1))
+        .sort((a, b) => (a.status > b.status ? 1 : -1))
         .map(election => (
-          <div key={election.id} className="w-full sm:w-1/3 rounded pr-8 mb-20">
+          <div key={election.id} className="w-full sm:w-1/3 rounded pr-8 mb-10">
             <div
               className={
                 'px-4 py-2 inline-block rounded uppercase font-bold text-white tracking-widest text-xs mb-4 ' +
