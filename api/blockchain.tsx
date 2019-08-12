@@ -115,17 +115,23 @@ export const BlockchainProvider = ({ children }) => {
         vote.position === transaction.position
     );
 
+    const { role } = users.find(({ id }) => id === transaction.from) || {
+      role: 'user'
+    };
+
     const electionBeingVoteTo = elections.find(
       election => election.id === transaction.electionId
     );
 
     // Do not let users change their vote,
     // vote for themselves,
-    // vote to closed elections
+    // vote to closed elections, if not the admin
+    // vote to open elections, if the admin -- For elections on hold
     if (
       previousVote ||
       transaction.to === transaction.from ||
-      electionBeingVoteTo.end < new Date()
+      (electionBeingVoteTo.end < new Date() && role !== 'admin') ||
+      (electionBeingVoteTo.end > new Date() && role === 'admin')
     ) {
       setMiningQueue(miningQueue.splice(1, miningQueue.length));
       return;

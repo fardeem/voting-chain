@@ -6,6 +6,7 @@ import DataContext from '../../api/DataProvider';
 import { useElectionResult } from '../../api/useResults';
 import AdminLayout from '../../layouts/AdminLayout';
 import ResultsPage from '../../components/ResultsPage';
+import ResolveHold from '../../components/ResolveHold';
 
 const Page = () => {
   const router = useRouter();
@@ -33,7 +34,13 @@ const Page = () => {
       }
     >
       {positionsOnHold.length > 0 ? (
-        <h1>Resolve Hold</h1>
+        <ResolveHold
+          election={election}
+          positionsOnHold={positionsOnHold.reduce((acc, item) => {
+            acc[item] = results[item];
+            return acc;
+          }, {})}
+        />
       ) : (
         <ResultsPage context={election} />
       )}
