@@ -5,12 +5,14 @@ import Link from 'next/link';
 import DataContext from '../../api/DataProvider';
 import { useElectionResult } from '../../api/useResults';
 import AdminLayout from '../../layouts/AdminLayout';
+import ResultsPage from '../../components/ResultsPage';
 
 const Page = () => {
   const router = useRouter();
   const { id } = router.query;
   const { elections } = useContext(DataContext);
-  const { name } = elections.find(election => election.id === id);
+  const election = elections.find(election => election.id === id);
+  const { name, status } = election;
 
   const [results, positionsOnHold] = useElectionResult(id);
 
@@ -33,7 +35,7 @@ const Page = () => {
       {positionsOnHold.length > 0 ? (
         <h1>Resolve Hold</h1>
       ) : (
-        <h1>Show Results</h1>
+        <ResultsPage context={election} />
       )}
     </AdminLayout>
   );
