@@ -22,19 +22,19 @@ const Page = () => {
   const router = useRouter();
   const { id } = router.query;
   const { elections } = useContext(DataContext);
-  const { status } =
+  const election =
     elections.length > 0 && elections.find(election => election.id === id);
 
   return (
     <ElectionsLayout>
       {(() => {
-        switch (status) {
+        switch (election.status) {
           case 'VOTING':
-            return <VotingPage />;
+            return <VotingPage context={election} />;
           case 'NOMINATING':
-            return <NominationsPage />;
+            return <NominationsPage context={election} />;
           default:
-            return <ResultsPage />;
+            return <ResultsPage context={election} />;
         }
       })()}
     </ElectionsLayout>

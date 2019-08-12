@@ -4,13 +4,9 @@ import { useRouter } from 'next/router';
 import DataContext from '../api/DataProvider';
 import NominateUser from './NominateUser';
 
-const NominationsPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const { users, elections } = useContext(DataContext);
-  const { positions, nominations } = elections.find(
-    election => election.id === id
-  );
+const NominationsPage = ({ context }) => {
+  const { users } = useContext(DataContext);
+  const { id, positions, nominations } = context;
 
   return (
     <div className="">

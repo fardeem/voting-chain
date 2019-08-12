@@ -4,15 +4,10 @@ import { useRouter } from 'next/router';
 import DataContext from '../api/DataProvider';
 import VoteForUser from './VoteForUser';
 
-const VotingPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const { users, elections } = useContext(DataContext);
-  const { positions, nominations } = elections.find(
-    election => election.id === id
-  );
+const VotingPage = ({ context }) => {
+  const { users } = useContext(DataContext);
+  const { id, positions, nominations } = context;
 
-  console.log('hhh');
   return (
     <div className="">
       {Object.keys(positions).map((key, index) => (
