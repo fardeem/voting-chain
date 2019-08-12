@@ -55,6 +55,19 @@ const VoteContent = ({ vote }) => {
           .table {
             border-collapse: separate;
             border-spacing: 1rem 0.5rem;
+            table-layout: fixed;
+            width: 100%;
+          }
+
+          td:first-of-type {
+            width: 100px;
+          }
+
+          .hash {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100%;
           }
         `}</style>
         <tbody>
@@ -84,6 +97,12 @@ const VoteContent = ({ vote }) => {
                 'MMMM do, yyyy h:mm:ss bbbb' // Ex: August 9th, 2001 7:00 a.m.
               )}
             </td>
+          </tr>
+          <tr>
+            <td className="font-bold uppercase tracking-wide mr-2">
+              Signature
+            </td>
+            <td className="hash">{vote.signature}</td>
           </tr>
         </tbody>
       </table>
