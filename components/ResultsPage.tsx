@@ -30,36 +30,18 @@ const ResultsPage = ({ context }: { context: Election }) => {
             <h1 className="text-sm font-bold uppercase tracking-wide mb-2">
               Winner{results[key].length > 1 && 's'} 🌟
             </h1>
-            <ul className="text-xl winners bg-purple-400 text-white px-2 pt-2 rounded">
-              {results[key]
-                .map(({ user: userId, vote }) => ({
-                  ...users.find(({ id }) => id === userId),
-                  vote
-                }))
-                .map(({ id, name, vote }) => (
-                  <li
-                    key={id}
-                    className="flex justify-between items-center pb-2"
-                  >
-                    <p>{name}</p>
-                    <p className="text-sm font-bold uppercase">
-                      {vote} vote{vote > 1 && 's'}
-                    </p>
-                  </li>
-                ))}
-
-              {results[key].length === 0 && (
-                <p className="pb-2 opacity-75 italic">
-                  No winner could be determined
-                </p>
-              )}
-            </ul>
+            <WinnersList
+              list={results[key].map(({ user: userId, vote }) => ({
+                ...users.find(({ id }) => id === userId),
+                vote
+              }))}
+            />
 
             <h1 className="text-sm font-bold uppercase tracking-wide mt-8">
               Other nominees 😭
             </h1>
-            <ul className="p-2 pl-2">
-              {nominations[key]
+            <NomineeList
+              list={nominations[key]
                 .filter(nominee =>
                   results[key].every(winner => nominee !== winner.user)
                 )
@@ -67,29 +49,52 @@ const ResultsPage = ({ context }: { context: Election }) => {
                   ...users.find(({ id }) => id === userId),
                   vote: blockchain.filter(
                     ({ vote }) =>
-                      vote !== null &&
                       vote.to === userId &&
                       vote.electionId === id &&
                       vote.position === key
                   ).length
-                }))
-                .map(({ id, name, vote }) => (
-                  <li
-                    key={id}
-                    className="flex justify-between items-center mb-2"
-                  >
-                    <p>{name}</p>
-                    <p className="text-xs font-bold uppercase">
-                      {vote} vote{vote > 1 && 's'}
-                    </p>
-                  </li>
-                ))}
-            </ul>
+                }))}
+            />
           </div>
         </div>
       ))}
     </div>
   );
 };
+
+const NameCard = ({ name, vote }) => (
+  <li className="flex justify-between items-center pb-2">
+    <p>{name}</p>
+    <p className="text-sm font-bold uppercase">
+      {vote} vote{vote > 1 && 's'}
+    </p>
+  </li>
+);
+
+const WinnersList = ({ list }) => (
+  <ul className="text-xl winners bg-purple-400 text-white px-2 pt-2 rounded">
+    {list.map(({ id, name, vote }) => (
+      <NameCard key={id} name={name} vote={vote} />
+    ))}
+
+    {list.length === 0 && (
+      <p className="pb-2 opacity-75 italic">No winner could be determined</p>
+    )}
+  </ul>
+);
+
+const NomineeList = ({ list }) => (
+  <ul className="p-2 pl-2">
+    {list.map(({ id, name, vote }) => (
+      <NameCard key={id} name={name} vote={vote} />
+    ))}
+
+    {list.length === 0 && (
+      <p className="pb-2 opacity-75 italic">
+        No other nominees for this position
+      </p>
+    )}
+  </ul>
+);
 
 export default ResultsPage;
