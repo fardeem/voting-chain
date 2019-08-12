@@ -38,19 +38,21 @@ const Block = ({ block }) => {
 const VoteContent = ({ vote }) => {
   const { users, elections } = useContext(DataContext);
 
+  const { name, role } = users.find(user => user.id === vote.from);
+
   const voteFormatted = {
     to: users.find(user => user.id === vote.to).name,
-    from: users.find(user => user.id === vote.from).name,
+    from: name,
     election: elections.find(election => election.id === vote.electionId).name,
     position: elections.find(election => election.id === vote.electionId)
       .positions[vote.position]
   };
 
-  console.log(voteFormatted);
-
   return (
     <>
-      <span className="font-bold uppercase tracking-wide mr-4">Vote</span>
+      <span className="font-bold uppercase tracking-wide mr-4">
+        Vote {role === 'admin' && '(By Admin)'}
+      </span>
       <table className="table">
         <style jsx>{`
           .table {
