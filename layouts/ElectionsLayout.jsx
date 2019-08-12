@@ -32,7 +32,13 @@ const ElectionsLayout = ({ children }) => {
         <div className="w-full max-w-4xl mx-auto px-8 pt-10">{children}</div>
       </div>
 
-      <footer className="py-8" />
+      <style jsx>{`
+        footer {
+          background-image: url(static/illustration.png);
+          min-height: 200px;
+        }
+      `}</style>
+      <footer className=" bg-contain bg-no-repeat bg-center" />
     </main>
   );
 };

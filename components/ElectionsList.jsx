@@ -11,7 +11,7 @@ const ElectionsList = () => {
   return (
     <div className="md:flex mb-4 md:-mr-8">
       {electionStates.map(state => (
-        <div className="w-full md:w-1/3 mr-8 mb-16" key={state}>
+        <div className="w-full md:w-1/3 mr-8" key={state}>
           <h1 className="text-sm font-bold border-purple-500 border-b-2 pb-1 mb-6 uppercase tracking-wide">
             {state === 'done' ? 'Past elections' : state}
           </h1>
