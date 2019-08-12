@@ -9,8 +9,18 @@ import ElectionsLayout from '../../layouts/ElectionsLayout';
 import ElectionsList from '../../components/ElectionsList';
 
 const ElectionsPage = () => (
-  <ElectionsLayout>
-    <ElectionsList />
+  <ElectionsLayout title="All Elections">
+    <div className="w-full max-w-4xl mx-auto p-8 bg-white rounded">
+      <ElectionsList />
+
+      <style jsx>{`
+        footer {
+          background-image: url(/static/illustration.png);
+          min-height: 200px;
+        }
+      `}</style>
+      <footer className="-mb-8 bg-contain bg-no-repeat bg-center" />
+    </div>
   </ElectionsLayout>
 );
 

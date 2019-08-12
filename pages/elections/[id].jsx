@@ -26,17 +26,35 @@ const Page = () => {
     elections.length > 0 && elections.find(election => election.id === id);
 
   return (
-    <ElectionsLayout>
-      {(() => {
-        switch (election.status) {
-          case 'VOTING':
-            return <VotingPage context={election} />;
-          case 'NOMINATING':
-            return <NominationsPage context={election} />;
-          default:
-            return <ResultsPage context={election} />;
-        }
-      })()}
+    <ElectionsLayout title={election.name}>
+      <div className="text-center -mt-4 mb-6">
+        <p className="inline-block text-white bg-indigo-600 text-sm font-bold py-2 px-4 rounded">
+          Now:{' '}
+          {(() => {
+            switch (election.status) {
+              case 'VOTING':
+                return 'Voting';
+              case 'NOMINATING':
+                return 'Nominating';
+              default:
+                return 'Showing Results';
+            }
+          })()}
+        </p>
+      </div>
+
+      <div className="w-full max-w-4xl mx-auto p-8 bg-white rounded">
+        {(() => {
+          switch (election.status) {
+            case 'VOTING':
+              return <VotingPage context={election} />;
+            case 'NOMINATING':
+              return <NominationsPage context={election} />;
+            default:
+              return <ResultsPage context={election} />;
+          }
+        })()}
+      </div>
     </ElectionsLayout>
   );
 };
