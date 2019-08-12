@@ -34,7 +34,7 @@ const ElectionsLayout = ({ children }) => {
 
       <style jsx>{`
         footer {
-          background-image: url(static/illustration.png);
+          background-image: url(/static/illustration.png);
           min-height: 200px;
         }
       `}</style>
