@@ -26,7 +26,7 @@ export function makeResults(
   votes: VoteByNominee[],
   positions: string[],
   nominees: string[]
-) {
+): [ResultsByPosition, string[]] {
   const results: ResultsByUser = nominees.reduce((result, nomineeId) => {
     result[nomineeId] = { vote: 0, positions: [] };
     return result;

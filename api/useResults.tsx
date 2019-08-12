@@ -3,9 +3,7 @@ import { makeResults, ResultsByPosition } from './makeResults';
 import BlockchainContext from './blockchain';
 import DataContext from './DataProvider';
 
-export function useElectionResult(
-  electionId: string
-): (string[] | ResultsByPosition)[] {
+export function useElectionResult(electionId: string) {
   const { blockchain } = useContext(BlockchainContext);
   const { elections } = useContext(DataContext);
   const { nominations } = elections.find(({ id }) => id === electionId);
