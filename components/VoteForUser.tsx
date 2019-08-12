@@ -36,6 +36,8 @@ const VoteForUser = ({ options, position, electionId }: Props) => {
     if (vote) {
       setVotedFor(vote);
       setSelectedUser(vote.to);
+    } else {
+      setVotedFor({});
     }
   }, [blockchain, miningQueue]);
 
