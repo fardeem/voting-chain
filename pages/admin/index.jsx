@@ -40,7 +40,7 @@ const AdminPage = () => {
       title={isCreating ? 'New Election' : 'All Election'}
       menuItems={<MenuItems />}
     >
-      <div>
+      <>
         <AdminCreateForm show={isCreating} setShow={setIsCreating} />
         <div
           className={
@@ -49,7 +49,7 @@ const AdminPage = () => {
         >
           <AdminElectionList />
         </div>
-      </div>
+      </>
     </AdminLayout>
   );
 };
