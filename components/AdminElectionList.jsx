@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { format } from 'date-fns';
+import Link from 'next/link';
 
 import DataProvider from '../api/DataProvider';
+import { useElectionResult } from '../api/useResults';
 
 const AdminElectionList = () => {
   const { elections } = useContext(DataProvider);
@@ -66,6 +68,17 @@ const AdminElectionList = () => {
                 ))}
               </ul>
             </div>
+
+            {election.status === 'DONE' &&
+              useElectionResult(election.id)[1].length > 0 && (
+                <div className="mb-4">
+                  <Link href="/admin/[id]" as={`/admin/${election.id}`}>
+                    <a className="text-sm tracking-wider uppercase text-red-500 underline">
+                      Requires attention
+                    </a>
+                  </Link>
+                </div>
+              )}
           </div>
         ))}
     </div>
