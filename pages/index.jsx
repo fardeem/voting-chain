@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Router from 'next/router';
 
-import AccountsPage from '../layouts/AccountsPage';
+import AccountsLayout from '../layouts/AccountsLayout';
 import AccountsForm from '../components/AccountsForm';
 
 import DataProvider from '../api/DataProvider';
@@ -21,9 +21,9 @@ const Home = () => {
   }
 
   return (
-    <AccountsPage>
+    <AccountsLayout>
       <AccountsForm />
-    </AccountsPage>
+    </AccountsLayout>
   );
 };
 
