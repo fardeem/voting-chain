@@ -46,7 +46,7 @@ const VoteForUser = ({ options, position, electionId }) => {
   }
 
   return (
-    <form className="w-3/4 flex items-center" onSubmit={handleSubmit}>
+    <form className="w-2/3 flex items-center" onSubmit={handleSubmit}>
       <div className=" w-3/4 relative mr-3">
         <select
           value={selectedUser}
