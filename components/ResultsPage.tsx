@@ -27,7 +27,10 @@ const ResultsPage = ({ context }: { context: Election }) => {
           </div>
 
           <div className="w-2/3">
-            <ul className="text-xl winners">
+            <h1 className="text-sm font-bold uppercase tracking-wide mb-2">
+              Winner{results[key].length > 1 && 's'} 🌟
+            </h1>
+            <ul className="text-xl winners bg-purple-400 text-white px-2 pt-2 rounded">
               {results[key]
                 .map(({ user: userId, vote }) => ({
                   ...users.find(({ id }) => id === userId),
@@ -36,17 +39,26 @@ const ResultsPage = ({ context }: { context: Election }) => {
                 .map(({ id, name, vote }) => (
                   <li
                     key={id}
-                    className="flex justify-between items-center mb-2"
+                    className="flex justify-between items-center pb-2"
                   >
-                    <p>{name} 🌟</p>
+                    <p>{name}</p>
                     <p className="text-sm font-bold uppercase">
                       {vote} vote{vote > 1 && 's'}
                     </p>
                   </li>
                 ))}
+
+              {results[key].length === 0 && (
+                <p className="pb-2 opacity-75 italic">
+                  No winner could be determined
+                </p>
+              )}
             </ul>
 
-            <ul className="pt-4 border-t-2 border-purple-500">
+            <h1 className="text-sm font-bold uppercase tracking-wide mt-8">
+              Other nominees 😭
+            </h1>
+            <ul className="p-2 pl-2">
               {nominations[key]
                 .filter(nominee =>
                   results[key].every(winner => nominee !== winner.user)
