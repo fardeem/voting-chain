@@ -38,7 +38,7 @@ const NominationsPage = () => {
                 .map(user => (
                   <li
                     key={user.id}
-                    className="inline-block px-2 py-1 bg-gray-400 rounded-lg mr-3 mb-3"
+                    className="inline-block px-2 py-1 bg-gray-300 rounded-lg mr-3 mb-3"
                   >
                     {user.name}
                   </li>
