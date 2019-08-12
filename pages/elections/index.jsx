@@ -8,7 +8,7 @@ import React from 'react';
 import ElectionsLayout from '../../layouts/ElectionsLayout';
 import ElectionsList from '../../components/ElectionsList';
 
-const ElectionsPage = ({ router }) => (
+const ElectionsPage = () => (
   <ElectionsLayout>
     <ElectionsList />
   </ElectionsLayout>
