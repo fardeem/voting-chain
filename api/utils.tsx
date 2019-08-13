@@ -33,7 +33,7 @@ export function castVote(
   return broadcastToNetwork(JSON.stringify(vote), 'VOTE');
 }
 
-type BroadcastAction = 'BLOCK' | 'VOTE';
+type BroadcastAction = 'BLOCK' | 'VOTE' | 'CHAIN';
 export function broadcastToNetwork(body: string, action: BroadcastAction) {
   let endpoint = '';
   const method = 'POST';
@@ -44,6 +44,7 @@ export function broadcastToNetwork(body: string, action: BroadcastAction) {
 
   if (action === 'BLOCK') endpoint = 'new-block';
   else if (action === 'VOTE') endpoint = 'new-vote';
+  else if (action === 'CHAIN') endpoint = 'chain';
 
   return fetch(`http://localhost:8500/${endpoint}`, {
     method,

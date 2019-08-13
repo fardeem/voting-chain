@@ -45,8 +45,16 @@ app.post('/new-block', function(req, res) {
   res.send('Received');
 });
 
+app.post('/chain', function(req, res) {
+  const blocks = req.body;
+
+  io.emit('BLOCK', blocks);
+  res.send('Received');
+});
+
 app.get('/blockchain', function(req, res) {
   const values = [];
+  io.emit('CHAIN');
 
   db.createReadStream()
     .on('data', function(data) {

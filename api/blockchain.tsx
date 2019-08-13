@@ -73,9 +73,28 @@ export const BlockchainProvider = ({ children }) => {
   const [blockchain, dispatch] = useReducer(blockchainReducer, [genesisBlock]);
   const chainPreviousHashRef = useRef(genesisBlock.hash);
 
+  // Initialize the blockchain
   useEffect(function() {
+    // Get new updates from the server
     fetch('http://localhost:8500/blockchain');
+
+    // Hydrate with the local cache
+    var localChain = localStorage.getItem('blockchain') || '[]';
+    dispatch({ type: 'UPDATE', value: JSON.parse(localChain) });
   }, []);
+
+  // Update the local blockchain cache
+  useEffect(() => {
+    window.localStorage.setItem('blockchain', JSON.stringify(blockchain));
+
+    socket.on('CHAIN', () => {
+      broadcastToNetwork(JSON.stringify(blockchain), 'CHAIN');
+    });
+
+    return () => {
+      socket.off('CHAIN');
+    };
+  }, [blockchain]);
 
   /**
    * Send votes to mining queue
