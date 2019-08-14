@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "next",
+    "server": "npx signalhub listen -p 8080",
     "build": "next build",
     "start": "next start",
     "test": "jest"
