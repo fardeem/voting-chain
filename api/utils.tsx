@@ -123,8 +123,8 @@ export function blockchainReducer(
         block =>
           block.hash === newBlock.hash &&
           block.previousHash === newBlock.previousHash
-      ) &&
-      calculatedHash === newBlock.hash
+      ) ||
+      calculatedHash !== newBlock.hash
     )
       return;
 
