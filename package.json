@@ -20,8 +20,10 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "sha.js": "^2.4.11",
+    "signalhub": "^4.9.0",
     "socket.io-client": "^2.2.0",
     "tailwindcss": "^1.0.3",
+    "webrtc-swarm": "^2.9.0",
     "worker-loader": "^2.0.0"
   },
   "devDependencies": {
