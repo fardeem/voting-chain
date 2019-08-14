@@ -18,6 +18,8 @@ import {
   getLongestChain,
   sortBlockchain
 } from './utils';
+import useNetwork from './useNetwork';
+import { auth } from './firebase';
 
 //====================
 // Interfaces
@@ -68,47 +70,65 @@ export const BlockchainProvider = ({ children }) => {
   const [blockchain, dispatch] = useReducer(blockchainReducer, [genesisBlock]);
   const chainPreviousHashRef = useRef(genesisBlock.hash);
 
+  const [peers, sendVote, sendBlock] = useNetwork(
+    subscribeToNewVote,
+    subscribeToNewBlocks
+  );
+
+  function castVote(partialVote: VoteInfo) {
+    const key = ec.keyFromPrivate(currentUser.privateKey, 'hex');
+
+    const vote: Vote = {
+      ...partialVote,
+      timestamp: Date.now(),
+      from: auth.currentUser.uid,
+      signature: ''
+    };
+
+    const voteHash = hashVote(vote);
+    vote.signature = key.sign(voteHash, 'base64').toDER('hex');
+
+    return sendVote(vote);
+  }
+
+  function subscribeToNewVote(vote: Vote) {
+    const fromUser = users.find(user => user.id === vote.from);
+
+    // client isn't logged in
+    if (!fromUser) return;
+
+    const publicKey = ec.keyFromPublic(fromUser.publicKey, 'hex');
+
+    if (publicKey.verify(hashVote(vote), vote.signature)) {
+      setMiningQueue(currentQueue => [...currentQueue, vote]);
+    }
+  }
+
+  function subscribeToNewBlocks(blocks: Block[]) {
+    return dispatch({ type: 'UPDATE', value: blocks });
+  }
+
   // Initialize the blockchain
   useEffect(function() {
-    // Get new updates from the server
-    fetch('http://localhost:8500/blockchain');
-
     // Hydrate with the local cache
     var localChain = localStorage.getItem('blockchain') || '[]';
     dispatch({ type: 'UPDATE', value: JSON.parse(localChain) });
   }, []);
 
+  // Update new peers with the current blockchain
+  useEffect(() => {
+    var localChain = localStorage.getItem('blockchain') || '[]';
+
+    sendBlock(JSON.parse(localChain));
+  }, [peers]);
+
   // Update the local blockchain cache
+  // Update previous hash for next block,
+  // everytime the blockchain is updated
   useEffect(() => {
     window.localStorage.setItem('blockchain', JSON.stringify(blockchain));
-
-    socket.on('CHAIN', () => {
-      broadcastToNetwork(JSON.stringify(blockchain), 'CHAIN');
-    });
-
-    return () => {
-      socket.off('CHAIN');
-    };
+    chainPreviousHashRef.current = getLongestChain(blockchain)[0].hash;
   }, [blockchain]);
-
-  /**
-   * Send votes to mining queue
-   * Check that signature matches with public key
-   */
-  useEffect(() => {
-    socket.on('MINE', (vote: Vote) => {
-      const fromUser = users.find(user => user.id === vote.from);
-      const publicKey = ec.keyFromPublic(fromUser.publicKey, 'hex');
-
-      if (publicKey.verify(hashVote(vote), vote.signature)) {
-        setMiningQueue(currentQueue => [...currentQueue, vote]);
-      }
-    });
-
-    return () => {
-      socket.off('MINE');
-    };
-  }, []);
 
   /**
    * Listen to mining queue
@@ -160,43 +180,18 @@ export const BlockchainProvider = ({ children }) => {
 
     miner.addEventListener('message', ({ data: block }: { data: Block }) => {
       // Broadcast to network that this is a new block
-      broadcastToNetwork(JSON.stringify(block), 'BLOCK').then(() => {
-        setMiningQueue(miningQueue.splice(1, miningQueue.length));
-        setIsMining(false);
-      });
+      sendBlock([block]);
+      setMiningQueue(miningQueue.splice(1, miningQueue.length));
+      setIsMining(false);
     });
   }, [miningQueue, isMining]);
-
-  /**
-   * Listen on socket for new blocks
-   * Add them to the chain
-   */
-  useEffect(() => {
-    socket.on('BLOCK', (blocks: Block[]) => {
-      dispatch({ type: 'UPDATE', value: blocks });
-    });
-
-    return () => {
-      socket.off('BLOCK');
-    };
-  }, []);
-
-  /**
-   * Update previous hash for next block,
-   * everytime the blockchain is updated
-   */
-  useEffect(() => {
-    chainPreviousHashRef.current = getLongestChain(blockchain)[0].hash;
-  }, [blockchain]);
 
   return (
     <BlockchainContext.Provider
       value={{
         blockchain: sortBlockchain(getLongestChain(blockchain)),
         miningQueue,
-        castVote: (vote: VoteInfo) => {
-          return castVote(vote, currentUser.privateKey);
-        }
+        castVote
       }}
     >
       {children}
