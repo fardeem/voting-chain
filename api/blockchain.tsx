@@ -6,7 +6,6 @@ import React, {
   createContext,
   useReducer
 } from 'react';
-import io from 'socket.io-client';
 
 // @ts-ignore
 import Miner from './miner.worker';
@@ -17,12 +16,8 @@ import {
   genesisBlock,
   hashVote,
   getLongestChain,
-  sortBlockchain,
-  broadcastToNetwork,
-  castVote
+  sortBlockchain
 } from './utils';
-
-const socket = io('localhost:8500');
 
 //====================
 // Interfaces
