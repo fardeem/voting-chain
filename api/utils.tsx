@@ -54,9 +54,9 @@ export function broadcastToNetwork(body: string, action: BroadcastAction) {
 }
 
 export const genesisBlock: Block = {
-  hash: '0008a5469e5cb0d2c2844a18efaf8fc723e100b08c34485b784e04fce79166f9',
+  hash: '000767da7e56264368c96030e274be80bae945ca9e3a512ad126fac473438833',
   previousHash: '0',
-  nonce: 194,
+  nonce: 224,
   // @ts-ignore
   vote: {}
 };
