@@ -12,47 +12,6 @@ export function hashVote(vote: Vote): string {
     .digest('hex');
 }
 
-export function castVote(
-  { to, electionId, position }: VoteInfo,
-  privateKey: string
-) {
-  const key = ec.keyFromPrivate(privateKey, 'hex');
-
-  const vote: Vote = {
-    to,
-    electionId,
-    position,
-    timestamp: Date.now(),
-    from: auth.currentUser.uid,
-    signature: ''
-  };
-
-  const voteHash = hashVote(vote);
-  vote.signature = key.sign(voteHash, 'base64').toDER('hex');
-
-  return broadcastToNetwork(JSON.stringify(vote), 'VOTE');
-}
-
-type BroadcastAction = 'BLOCK' | 'VOTE' | 'CHAIN';
-export function broadcastToNetwork(body: string, action: BroadcastAction) {
-  let endpoint = '';
-  const method = 'POST';
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  };
-
-  if (action === 'BLOCK') endpoint = 'new-block';
-  else if (action === 'VOTE') endpoint = 'new-vote';
-  else if (action === 'CHAIN') endpoint = 'chain';
-
-  return fetch(`http://localhost:8500/${endpoint}`, {
-    method,
-    headers,
-    body
-  });
-}
-
 export const genesisBlock: Block = {
   hash: '000767da7e56264368c96030e274be80bae945ca9e3a512ad126fac473438833',
   previousHash: '0',
