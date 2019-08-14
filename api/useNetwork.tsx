@@ -47,8 +47,10 @@ export default function useNetwork(
     sw.on('peer', function(peer, id) {
       setPeers(peers => ({ ...peers, [id]: peer }));
 
+      console.group('swarm-connect');
       console.log('connected to a new peer:', id);
       console.log('total peers:', sw.peers.length);
+      console.groupEnd();
 
       peer.on('data', (data: PeerExchangeFormat) => {
         const { infoType, value } = JSON.parse(data.toString());
@@ -62,21 +64,18 @@ export default function useNetwork(
       });
     });
 
-    sw.on('disconnect', function(_, id: string) {
+    sw.on('disconnect', function(peer, id: string) {
+      console.group('swarm-disconnect');
+      console.log('disconnected from peer:', id);
+      console.log('total peers:', sw.peers.length);
+      console.groupEnd();
+
       setPeers(peers => {
         var newPeerList = Object.assign({}, peers);
         delete newPeerList[id];
         return newPeerList;
       });
     });
-
-    sw.on('close', () => {
-      setPeers({});
-    });
-
-    return () => {
-      sw.close();
-    };
   }, []);
 
   return [peers, sendVote, sendBlock];
