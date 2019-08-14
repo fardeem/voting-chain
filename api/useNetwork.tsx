@@ -11,17 +11,24 @@ interface PeerExchangeFormat {
   value: Vote | Block;
 }
 
+interface PeerList {
+  [key: string]: {
+    send: Function;
+    on: Function;
+    [key: string]: any;
+  };
+}
+
 export default function useNetwork(
   voteSub: Function,
   blockSub: Function
-): [Object, (vote: Vote) => void, (blocks: Block[]) => void] {
-  const [peers, setPeers] = useState({});
+): [PeerList, (vote: Vote) => void, (blocks: Block[]) => void] {
+  const [peers, setPeers] = useState<Partial<PeerList>>({});
 
   function sendVote(vote: Vote) {
     voteSub(vote); // Send to self
 
     Object.values(peers).forEach(peer => {
-      // @ts-ignore
       peer.send(JSON.stringify({ infoType: 'VOTE', value: vote }));
     });
   }
@@ -30,7 +37,6 @@ export default function useNetwork(
     blockSub(blocks);
 
     Object.values(peers).forEach(peer => {
-      // @ts-ignore
       peer.send(JSON.stringify({ infoType: 'BLOCK', value: blocks }));
     });
   }
