@@ -63,6 +63,14 @@ export default function useNetwork(
         return newPeerList;
       });
     });
+
+    sw.on('close', () => {
+      setPeers({});
+    });
+
+    return () => {
+      sw.close();
+    };
   }, []);
 
   return [peers, sendVote, sendBlock];
