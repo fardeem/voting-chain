@@ -1,8 +1,6 @@
 import shajs from 'sha.js';
-import ec from './curve';
 
-import { VoteInfo, Vote, Block } from './blockchain';
-import { auth } from './firebase';
+import { Vote, Block } from './blockchain';
 
 export function hashVote(vote: Vote): string {
   return shajs('sha256')
@@ -20,6 +18,20 @@ export const genesisBlock: Block = {
   vote: {}
 };
 
+/**
+ * Find longest chain the blockchain
+ *
+ * 1. Start at the genesis block
+ * 2. Move the the block connected to the genesis block
+ * 3. Push the genesis block to a list of visited blocks
+ * 4. Repeat step 1 with this new block
+ * 5. End when no other blocks has previousHash equal to
+ *    the current block
+ *
+ * For forks, duplicate the history list and concurrently
+ * work on both forks.
+ *
+ */
 export function getLongestChain(blockchain: Block[]): Block[] {
   const found = [];
 

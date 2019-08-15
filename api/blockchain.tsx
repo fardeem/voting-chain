@@ -17,7 +17,7 @@ import {
   hashVote,
   getLongestChain,
   sortBlockchain
-} from './utils';
+} from './chainUtils';
 import useNetwork from './useNetwork';
 import { auth } from './firebase';
 
@@ -86,6 +86,7 @@ export const BlockchainProvider = ({ children }) => {
       signature: ''
     };
 
+    // Sign the vote with the user's private key
     const voteHash = hashVote(vote);
     vote.signature = key.sign(voteHash, 'base64').toDER('hex');
 
@@ -100,6 +101,7 @@ export const BlockchainProvider = ({ children }) => {
 
     const publicKey = ec.keyFromPublic(fromUser.publicKey, 'hex');
 
+    // Verify that the vote has an authenticate signature
     if (publicKey.verify(hashVote(vote), vote.signature)) {
       setMiningQueue(currentQueue => [...currentQueue, vote]);
     }
@@ -150,6 +152,7 @@ export const BlockchainProvider = ({ children }) => {
         vote.position === transaction.position
     );
 
+    // Get the role of the user who voted
     const { role } = users.find(({ id }) => id === transaction.from) || {
       role: 'user'
     };
@@ -158,7 +161,8 @@ export const BlockchainProvider = ({ children }) => {
       election => election.id === transaction.electionId
     );
 
-    // Do not let users change their vote,
+    // Do not:
+    // let users change their vote,
     // vote for themselves,
     // vote to closed elections, if not the admin
     // vote to open elections, if the admin -- For elections on hold
