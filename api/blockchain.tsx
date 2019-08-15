@@ -52,6 +52,7 @@ type ContextProps = {
   blockchain: Block[];
   miningQueue: Vote[];
   castVote: Function;
+  peersCount: number;
 };
 
 const BlockchainContext = createContext<Partial<ContextProps>>({});
@@ -191,7 +192,8 @@ export const BlockchainProvider = ({ children }) => {
       value={{
         blockchain: sortBlockchain(getLongestChain(blockchain)),
         miningQueue,
-        castVote
+        castVote,
+        peersCount: Object.keys(peers).length
       }}
     >
       {children}
