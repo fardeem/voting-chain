@@ -1,8 +1,6 @@
 import shajs from 'sha.js';
-import ec from './curve';
 
-import { VoteInfo, Vote, Block } from './blockchain';
-import { auth } from './firebase';
+import { Vote, Block } from './blockchain';
 
 export function hashVote(vote: Vote): string {
   return shajs('sha256')
@@ -12,55 +10,28 @@ export function hashVote(vote: Vote): string {
     .digest('hex');
 }
 
-export function castVote(
-  { to, electionId, position }: VoteInfo,
-  privateKey: string
-) {
-  const key = ec.keyFromPrivate(privateKey, 'hex');
-
-  const vote: Vote = {
-    to,
-    electionId,
-    position,
-    timestamp: Date.now(),
-    from: auth.currentUser.uid,
-    signature: ''
-  };
-
-  const voteHash = hashVote(vote);
-  vote.signature = key.sign(voteHash, 'base64').toDER('hex');
-
-  return broadcastToNetwork(JSON.stringify(vote), 'VOTE');
-}
-
-type BroadcastAction = 'BLOCK' | 'VOTE' | 'CHAIN';
-export function broadcastToNetwork(body: string, action: BroadcastAction) {
-  let endpoint = '';
-  const method = 'POST';
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  };
-
-  if (action === 'BLOCK') endpoint = 'new-block';
-  else if (action === 'VOTE') endpoint = 'new-vote';
-  else if (action === 'CHAIN') endpoint = 'chain';
-
-  return fetch(`http://localhost:8500/${endpoint}`, {
-    method,
-    headers,
-    body
-  });
-}
-
 export const genesisBlock: Block = {
-  hash: '0008a5469e5cb0d2c2844a18efaf8fc723e100b08c34485b784e04fce79166f9',
+  hash: '000767da7e56264368c96030e274be80bae945ca9e3a512ad126fac473438833',
   previousHash: '0',
-  nonce: 194,
+  nonce: 224,
   // @ts-ignore
   vote: {}
 };
 
+/**
+ * Find longest chain the blockchain
+ *
+ * 1. Start at the genesis block
+ * 2. Move the the block connected to the genesis block
+ * 3. Push the genesis block to a list of visited blocks
+ * 4. Repeat step 1 with this new block
+ * 5. End when no other blocks has previousHash equal to
+ *    the current block
+ *
+ * For forks, duplicate the history list and concurrently
+ * work on both forks.
+ *
+ */
 export function getLongestChain(blockchain: Block[]): Block[] {
   const found = [];
 
@@ -123,8 +94,8 @@ export function blockchainReducer(
         block =>
           block.hash === newBlock.hash &&
           block.previousHash === newBlock.previousHash
-      ) &&
-      calculatedHash === newBlock.hash
+      ) ||
+      calculatedHash !== newBlock.hash
     )
       return;
 

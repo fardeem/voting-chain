@@ -5,6 +5,7 @@ import Router from 'next/router';
 import DataContext from '../api/DataProvider';
 import ElectionsNav from '../components/ElectionsNav';
 import Loading from '../components/Loading';
+import PeersList from '../components/PeersList';
 
 const ElectionsLayout = ({ children, title }) => {
   const { currentUser } = useContext(DataContext);
@@ -21,6 +22,7 @@ const ElectionsLayout = ({ children, title }) => {
 
   return (
     <main className="min-h-screen bg-pattern pb-10">
+      <PeersList />
       <header>
         <div className="w-full max-w-4xl mx-auto px-8 pt-6 pb-8">
           <ElectionsNav />

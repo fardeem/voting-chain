@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 /* Your custom CSS here */
+html,
 .bg-pattern {
   background-color: #11101e;
   background-color: #11101e;
