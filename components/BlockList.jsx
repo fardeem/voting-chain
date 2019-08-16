@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import BlockchainContext from '../api/blockchain';
+import { sortBlockchain } from '../api/chainUtils';
 import Block from './Block';
 
 const BlockList = () => {
@@ -8,7 +9,7 @@ const BlockList = () => {
 
   return (
     <ol className="pb-8">
-      {blockchain.map((block, i) => (
+      {sortBlockchain(blockchain).map((block, i) => (
         <Block key={i} block={block} />
       ))}
     </ol>
