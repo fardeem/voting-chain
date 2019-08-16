@@ -142,7 +142,7 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!currentUser || users.length === 0) return;
+    if (!currentUser || users.length === 0 || currentUser.privateKey) return;
 
     db.collection('privateKeys')
       .doc(currentUser.id)
