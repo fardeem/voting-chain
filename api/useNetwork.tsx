@@ -19,11 +19,11 @@ interface PeerList {
   };
 }
 
-let sw;
+// let sw;
 
-if (swarm.WEBRTC_SUPPORT) {
-  sw = swarm(hub);
-}
+// if (swarm.WEBRTC_SUPPORT) {
+//   sw = swarm(hub);
+// }
 
 export default function useNetwork(
   voteSub: Function,
@@ -48,6 +48,8 @@ export default function useNetwork(
   }
 
   useEffect(() => {
+    var sw = swarm(hub);
+
     function connectPeer(peer, id) {
       setPeers(peers => ({ ...peers, [id]: peer }));
 
@@ -70,7 +72,7 @@ export default function useNetwork(
 
     function disconnectPeer(peer, id) {
       console.group('swarm-disconnect');
-      console.log('connected to a new peer:', id);
+      console.log('disconnected from peer:', id);
       console.log('total peers:', sw.peers.length);
       console.groupEnd();
 
@@ -87,6 +89,7 @@ export default function useNetwork(
     return () => {
       sw.removeListener('peer', connectPeer);
       sw.removeListener('disconnect', disconnectPeer);
+      sw = {};
     };
   }, []);
 
