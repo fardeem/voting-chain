@@ -1,6 +1,7 @@
 import shajs from 'sha.js';
 
 import { Vote, Block } from './blockchain';
+import { User, Election } from './DataProvider';
 
 export function hashVote(vote: Vote): string {
   return shajs('sha256')
@@ -71,35 +72,79 @@ export function sortBlockchain(chain: Block[]) {
   return sorted;
 }
 
-type BlockchainActions = { type: 'UPDATE'; value: Block[] };
+interface BlockchainActions {
+  value: Block[];
+  context: {
+    users: User[];
+    elections: Election[];
+  };
+}
 
 export function blockchainReducer(
   blockchain: Block[],
   action: BlockchainActions
 ) {
-  if (action.type !== 'UPDATE') throw new Error('HOBE NAH TOH!');
-
-  const updates = [];
-  action.value.forEach(newBlock => {
+  function isBlockValid(block: Block) {
+    // Reject blocks with false hash
     const calculatedHash = shajs('sha256')
       .update(
-        JSON.stringify(newBlock.vote) +
-          newBlock.previousHash +
-          String(newBlock.nonce)
+        JSON.stringify(block.vote) + block.previousHash + String(block.nonce)
       )
       .digest('hex');
 
-    if (
-      blockchain.find(
-        block =>
-          block.hash === newBlock.hash &&
-          block.previousHash === newBlock.previousHash
-      ) ||
-      calculatedHash !== newBlock.hash
-    )
-      return;
+    if (calculatedHash !== block.hash) return false;
 
-    updates.push(newBlock);
+    // Reject blocks that already exists
+    // Judging by the hash and previousHash
+    const existsOnBlockchain = blockchain.find(
+      ({ hash }) => hash === block.hash
+    );
+
+    if (existsOnBlockchain) return;
+
+    // Pt2: Verify vote
+    const { vote } = block;
+    const fromUser = action.context.users.find(({ id }) => id === vote.from);
+    const forElection = action.context.elections.find(
+      ({ id }) => id === vote.electionId
+    );
+
+    // Reject vote if its to self
+    if (vote.to === vote.from) return false;
+
+    // Reject if user has already votde to this
+    // election and position
+    const previousVote = getLongestChain(blockchain).find(
+      block =>
+        block.vote.from === vote.from &&
+        block.vote.electionId === vote.electionId &&
+        block.vote.position === vote.position
+    );
+
+    if (previousVote) return false;
+
+    // Reject vote if its not from the admin
+    // and is after the election endtime
+    if (
+      fromUser.role !== 'admin' &&
+      vote.timestamp > new Date(forElection.end).getTime()
+    )
+      return false;
+
+    // Reject vote if its from the admin
+    // and is before the election endtime
+    if (
+      fromUser.role === 'admin' &&
+      vote.timestamp < new Date(forElection.end).getTime()
+    )
+      return false;
+
+    return true;
+  }
+
+  const updates = [];
+  action.value.forEach(block => {
+    if (isBlockValid(block)) updates.push(block);
   });
 
   return [...blockchain, ...updates];
