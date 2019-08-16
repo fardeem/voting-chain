@@ -80,10 +80,6 @@ export const DataProvider = ({ children }) => {
   const [usersLoaded, setUsersLoaded] = useState(false);
   const [electionsLoaded, setElectionsLoaded] = useState(false);
 
-  let electionUnsubscriber = function() {},
-    usersUnsubscriber = function() {},
-    currentUserUnsubscriber = function() {};
-
   function subscribeToElections() {
     function calcStatus(start: Date, end: Date): String {
       const now = new Date();
@@ -93,78 +89,72 @@ export const DataProvider = ({ children }) => {
       else return 'DONE';
     }
 
-    electionUnsubscriber = db
-      .collection('elections')
-      .onSnapshot(querySnapshot => {
-        const elections = [];
+    return db.collection('elections').onSnapshot(querySnapshot => {
+      const elections = [];
 
-        querySnapshot.forEach(doc => {
-          const { start, end, ...rest } = doc.data();
-          const startTime = start.toDate();
-          const endTime = end.toDate();
+      querySnapshot.forEach(doc => {
+        const { start, end, ...rest } = doc.data();
+        const startTime = start.toDate();
+        const endTime = end.toDate();
 
-          elections.push({
-            id: doc.id,
-            start: startTime,
-            end: endTime,
-            ...rest,
-            status: calcStatus(startTime, endTime)
-          });
+        elections.push({
+          id: doc.id,
+          start: startTime,
+          end: endTime,
+          ...rest,
+          status: calcStatus(startTime, endTime)
         });
-
-        setElections(elections);
-        setElectionsLoaded(true);
       });
+
+      setElections(elections);
+      setElectionsLoaded(true);
+    });
   }
 
-  function subscribeToUsers(currentUserId: string) {
-    usersUnsubscriber = db.collection('users').onSnapshot(querySnapshot => {
+  function subscribeToUsers() {
+    return db.collection('users').onSnapshot(querySnapshot => {
       const users = [];
 
       querySnapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
       setUsers(users);
-
-      db.collection(`privateKeys`)
-        .doc(currentUserId)
-        .get()
-        .then(doc => {
-          if (!doc.exists) return;
-
-          setCurrentUser({
-            ...users.find(user => user.id === currentUserId),
-            privateKey: doc.data().key
-          });
-
-          setUsersLoaded(true);
-        });
+      setUsersLoaded(true);
     });
   }
 
   useEffect(() => {
-    currentUserUnsubscriber = auth.onAuthStateChanged(user => {
-      if (user) {
-        setElectionsLoaded(false);
-        setUsersLoaded(false);
+    const electionsUnsubscriber = subscribeToElections();
+    const usersUnsubscriber = subscribeToUsers();
 
-        subscribeToElections();
-        subscribeToUsers(user.uid);
+    const currentUserUnsubscriber = auth.onAuthStateChanged(user => {
+      if (user) {
+        setCurrentUser({ id: user.uid });
       } else {
         setCurrentUser(null);
-        setUsers([]);
-        setElections([]);
-        setElectionsLoaded(true);
-        setUsersLoaded(true);
+        setAuthLoaded(true);
       }
-
-      setAuthLoaded(true);
     });
 
     return () => {
-      electionUnsubscriber();
+      electionsUnsubscriber();
       usersUnsubscriber();
       currentUserUnsubscriber();
     };
   }, []);
+
+  useEffect(() => {
+    if (!currentUser || users.length === 0) return;
+
+    db.collection('privateKeys')
+      .doc(currentUser.id)
+      .get()
+      .then(doc => {
+        setCurrentUser({
+          ...users.find(user => user.id === currentUser.id),
+          privateKey: doc.data().key
+        });
+        setAuthLoaded(true);
+      });
+  }, [users, currentUser]);
 
   return (
     <DataContext.Provider value={{ elections, users, currentUser }}>
