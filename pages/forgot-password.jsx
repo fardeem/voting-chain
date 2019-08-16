@@ -14,7 +14,7 @@ import React, { useState } from 'react';
 import NProgress from 'nprogress';
 import Head from 'next/head';
 
-import AccountsLayout from '../layouts/accountsLayout';
+import AccountsLayout from '../layouts/AccountsLayout';
 import { auth, handleAuthError } from '../api/firebase';
 
 const ForgotPassword = () => {
