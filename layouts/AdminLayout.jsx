@@ -14,13 +14,13 @@ const AdminLayout = ({ title, menuItems, children }) => {
   }
 
   return (
-    <main>
+    <main className="min-h-screen bg-white">
       <Head>
         <title>{title}</title>
       </Head>
 
       <header className="bg-pattern">
-        <div className="flex justify-between items-center w-full max-w-4xl mx-auto px-8 py-6 mb-4">
+        <div className="flex justify-between items-center w-full max-w-4xl mx-auto p-8">
           <div>
             <p className="text-gray-600 text-sm uppercase font-bold tracking-widest">
               Admin DashBoard
