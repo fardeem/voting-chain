@@ -1,4 +1,4 @@
-# Voting Chain
+# Voting Chain 🗳🗳🗳
 
 ## Table of Contents
 
