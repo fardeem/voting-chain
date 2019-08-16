@@ -94,6 +94,8 @@ export const DataProvider = ({ children }) => {
     const usersUnsubscriber = subscribeToUsers();
 
     const currentUserUnsubscriber = auth.onAuthStateChanged(user => {
+      setAuthLoaded(false);
+
       if (user) {
         setCurrentUser({ id: user.uid });
       } else {
