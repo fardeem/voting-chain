@@ -90,6 +90,7 @@ export default function useNetwork(
       sw.removeListener('peer', connectPeer);
       sw.removeListener('disconnect', disconnectPeer);
       sw = {};
+      setPeers({});
     };
   }, []);
 
