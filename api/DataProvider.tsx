@@ -1,35 +1,3 @@
-/**
- * This is a really a complicated React component so bear with me
- * as I explain to my future self how this works.
- *
- * You might want some coffee ☕️
- *
- * This component is responsible for fetching and storing all
- * the data from firebase. Acts as a global store.
- *
- * On load, it checks if a user is logged in
- *  - (yes): Fetches the list of all users and elections
- *  - (no): Does nothing, literally
- *
- * If would have been pretty simple if this was it, but we have
- * to think about loading.
- *
- * The state stores three things for loading
- *  - authLoaded
- *  - usersLoaded
- *  - electionsLoaded
- *
- * If
- *  - (user not logged in) all of them are set to true
- *  - (user logged in) only authLoaded is set to true
- *
- * When the component is finished data fetching, it sets the
- * corresponding states to true.
- *
- * The component only shows its child components when all
- * loading variables becomes true. Else, it show's a loading screen.
- */
-
 import React, { createContext, useState, useEffect } from 'react';
 
 import { db, auth } from './firebase';
