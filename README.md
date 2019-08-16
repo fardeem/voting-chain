@@ -1,5 +1,7 @@
 # Voting Chain 🗳🗳🗳
 
+![Homepage](/screenshots/elections.png)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -12,8 +14,6 @@
   - [P2P Network](#p2p-network)
   - [Calculating Results](#calculating-results)
 - [Favorite Pieces of Code](#favorite-pieces-of-code)
-
----
 
 ## Introducion
 
