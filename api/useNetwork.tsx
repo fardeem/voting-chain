@@ -19,12 +19,6 @@ interface PeerList {
   };
 }
 
-// let sw;
-
-// if (swarm.WEBRTC_SUPPORT) {
-//   sw = swarm(hub);
-// }
-
 export default function useNetwork(
   voteSub: Function,
   blockSub: Function
