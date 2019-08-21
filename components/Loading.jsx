@@ -22,7 +22,9 @@ const Loading = () => {
         <title>Loading</title>
       </Head>
 
-      <div className="w-full h-screen bg-pattern flex justify-center items-center" />
+      <div className="w-full h-screen bg-pattern flex justify-center items-center">
+        <img src="/static/logo.png" className="max-w-xl" alt="Logo" />
+      </div>
     </>
   );
 };
