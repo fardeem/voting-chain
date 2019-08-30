@@ -23,7 +23,7 @@ html,
     top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 3px;
   }
   .peg {
     display: block;
@@ -31,7 +31,7 @@ html,
     right: 0;
     width: 100px;
     height: 100%;
-    box-shadow: 0 0 10px var(--blue), 0 0 5px var(--blue);
+    box-shadow: 0 0 30px var(--blue), 0 0 5px var(--blue);
     opacity: 1;
     transform: rotate(3deg) translate(0px, -4px);
   }
@@ -43,8 +43,8 @@ html,
     right: 15px;
   }
   .spinner-icon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     box-sizing: border-box;
     border: solid 2px transparent;
     border-top-color: var(--blue);

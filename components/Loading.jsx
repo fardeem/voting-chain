@@ -23,7 +23,7 @@ const Loading = () => {
       </Head>
 
       <div className="w-full h-screen bg-pattern flex justify-center items-center">
-        <img src="/static/logo.png" className="max-w-xl" alt="Logo" />
+        <img src="/static/logo.png" className="max-w-sm" alt="Logo" />
       </div>
     </>
   );
