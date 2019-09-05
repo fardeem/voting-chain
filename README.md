@@ -14,6 +14,7 @@
   - [P2P Network](#p2p-network)
   - [Calculating Results](#calculating-results)
 - [Favorite Pieces of Code](#favorite-pieces-of-code)
+- [Screenshots](#screenshots)
 
 ## Introducion
 
@@ -91,3 +92,36 @@ On the admin side, for elections on hold, the admin is allowed to make a special
 - [The Code that Generates the Results](https://github.com/fardeemmunir/voting-chain/blob/master/api/makeResults.tsx)
 - [The P2P Network React Hook](https://github.com/fardeemmunir/voting-chain/blob/master/api/useNetwork.tsx)
 - [Function that returns the longest chain of the blockchain](https://github.com/fardeemmunir/voting-chain/blob/eb830f264bf8667e54039543254288054a4b3909/api/chainUtils.tsx#L36:L54) - I get really happy anytime I can use recursion in my code to do things elegant.
+
+## Screenshots
+
+Login/Sign up page
+![](/screenshots/login.png)
+![](/screenshots/signup.png)
+
+All elections list page
+![](/screenshots/elections.png)
+
+Election nomination page
+![](/screenshots/nominating.png)
+
+Voting page
+![](/screenshots/voting.png)
+
+Results page
+![](/screenshots/results.png)
+
+Profile page to change passwords
+![](/screenshots/profile.png)
+
+Blockchain Explorer page
+![](/screenshots/blockchain.png)
+
+Admin Dashboard
+![](/screenshots/admin_dashboard.png)
+
+Create new election form
+![](/screenshots/new_election.png)
+
+Resolve elections that are on hold
+![](/screenshots/resolve_holded.png)
