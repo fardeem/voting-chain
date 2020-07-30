@@ -13,7 +13,7 @@
     "@zeit/next-workers": "^1.0.0",
     "array-flat-polyfill": "^1.0.1",
     "date-fns": "^2.0.0-beta.3",
-    "elliptic": "^6.5.0",
+    "elliptic": "^6.5.3",
     "firebase": "^6.1.1",
     "next": "^9.0.4-canary.3",
     "nprogress": "^0.2.0",
